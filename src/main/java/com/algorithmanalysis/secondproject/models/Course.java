@@ -1,13 +1,17 @@
 package com.algorithmanalysis.secondproject.models;
 
+import java.io.Serializable;
+
 /**
  * Course class
  *
  * This class is used to represent a course in the algorithm.
- * @author: Johan Rodríguez
- * @version: 1.0
+ * 
+ * @author Johan Rodríguez
+ * @author Aaron González
+ * @version 1.0
  */
-public class Course {
+public class Course implements Serializable {
     private String name; // The name of the course
 
     /**

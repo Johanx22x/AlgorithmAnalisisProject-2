@@ -1,5 +1,6 @@
 package com.algorithmanalysis.secondproject.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -7,10 +8,11 @@ import java.util.ArrayList;
  *
  * This class represents a chromosome of the genetic algorithm.
  *
- * @author: Johan Rodriguez
- * @version: 1.0
+ * @author Johan Rodriguez
+ * @author Aaron González
+ * @version 1.0
  */
-public class Chromosome {
+public class Chromosome implements Serializable {
     ArrayList<Allele> alleles = new ArrayList<>();
 
     /**
@@ -32,7 +34,7 @@ public class Chromosome {
     }
 
     /**
-     * Set the alleles of the chromosome 
+     * Set the alleles of the chromosome
      *
      * @param alleles Alleles of the chromosome
      */

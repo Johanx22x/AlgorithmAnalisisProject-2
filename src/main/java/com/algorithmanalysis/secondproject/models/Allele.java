@@ -1,15 +1,18 @@
 package com.algorithmanalysis.secondproject.models;
 
+import java.io.Serializable;
+
 /**
  * Allele
  *
  * This class represents an allele in the genetic algorithm.
  * An allele is a pair of a professor, a course and a grade.
  *
- * @author: Johan Rodriguez
- * @version: 1.0
+ * @author Johan Rodriguez
+ * @author Aaron González
+ * @version 1.0
  */
-public class Allele {
+public class Allele implements Serializable {
     private Professor professor; // The professor
     private Course course; // The course
     private int grade; // Professor's grade for the course
@@ -18,8 +21,8 @@ public class Allele {
      * Constructor
      *
      * @param professor The professor
-     * @param course The course
-     * @param grade The professor's grade for the course
+     * @param course    The course
+     * @param grade     The professor's grade for the course
      */
     public Allele(Professor professor, Course course, int grade) {
         this.professor = professor;
@@ -28,7 +31,7 @@ public class Allele {
     }
 
     /**
-     * Get the Allele 
+     * Get the Allele
      *
      * @return The Allele
      */
@@ -48,7 +51,7 @@ public class Allele {
     }
 
     /**
-     * Get the professor 
+     * Get the professor
      * 
      * @return The professor
      */
