@@ -1,0 +1,48 @@
+{
+  "professors": [
+    {
+      "name": "Jo Bailey",
+      "grades": [
+        10,
+        0,
+        6,
+        9,
+        6,
+        3,
+        7,
+        6,
+        8
+      ]
+    },
+    {
+      "name": "Joseph Thomason",
+      "grades": [
+        9,
+        10,
+        6,
+        4,
+        9,
+        7,
+        7,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "Richard Shea",
+      "grades": [
+        10,
+        7,
+        2,
+        7,
+        6,
+        5,
+        -1,
+        9,
+        8
+      ]
+    }
+  ],
+  "courses": 9,
+  "population": 3
+}
