@@ -44,8 +44,8 @@ public class AppTest
     public void testApp() throws FileNotFoundException, IOException, ClassNotFoundException {
 
         ArrayList<Allele> alelos = new ArrayList<>();
-        alelos.add(new Allele(new Professor("Nigger"), new Course("Semen"), 90));
-        DataStore.dumpToFile("Semen", alelos);
+        alelos.add(new Allele(new Professor("Damn"), new Course("Semen"), 90));
+        DataStore.dumpToFile("Damn", alelos);
 
         ArrayList<Allele> alelos2 = DataStore.loadFromFile("Semen");
         System.out.println(alelos2.toString());
