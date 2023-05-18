@@ -13,7 +13,7 @@ import com.algorithmanalysis.secondproject.utils.TableFormat;
  * Purpose: Main class for the project
  */
 public class App {
-    public static void main( String[] args ) {
+    public static void main(String[] args ) {
         LoadJson loadJson = new LoadJson();
         ArrayList<ArrayList<Allele>> alleles = loadJson.getAlleles(); // returns an ArrayList<ArrayList<Allele>>
         // loadJson.getPopulation() // returns an ArrayList<String>
