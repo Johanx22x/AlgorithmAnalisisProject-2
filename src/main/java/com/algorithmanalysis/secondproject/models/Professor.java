@@ -1,13 +1,16 @@
 package com.algorithmanalysis.secondproject.models;
 
+import java.io.Serializable;
+
 /**
  * Professor class
  *
  * This class is used to represent a professor in the algorithm.
- * Author: Johan Rodríguez
+ * @author Johan Rodríguez
+ * @author Aaron González
  */
-public class Professor {
-    String name; // The name of the professor
+public class Professor implements Serializable {
+    private String name; // The name of the professor
 
     /**
      * Constructor
