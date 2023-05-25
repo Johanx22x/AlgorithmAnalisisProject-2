@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class Chromosome implements Serializable {
-    ArrayList<Allele> alleles = new ArrayList<>();
+    private ArrayList<Allele> alleles = new ArrayList<>();
 
     /**
      * Constructor

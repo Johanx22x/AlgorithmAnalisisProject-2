@@ -17,10 +17,10 @@ import org.json.simple.parser.*;
  * @version 1.0
  */
 public class LoadJson {
-    ArrayList<ArrayList<Allele>> alleles = new ArrayList<ArrayList<Allele>>(); // Array of alleles for each file
-    ArrayList<Integer> population = new ArrayList<Integer>(); // Array of population for each file
-    ArrayList<Integer> totalOfCourses = new ArrayList<Integer>(); // Array of total of courses for each file
-    ArrayList<Integer> totalOfProfessors = new ArrayList<Integer>(); // Array of total of professors for each file
+    private ArrayList<ArrayList<Allele>> alleles = new ArrayList<ArrayList<Allele>>(); // Array of alleles for each file
+    private ArrayList<Integer> population = new ArrayList<Integer>(); // Array of population for each file
+    private ArrayList<Integer> totalOfCourses = new ArrayList<Integer>(); // Array of total of courses for each file
+    private ArrayList<Integer> totalOfProfessors = new ArrayList<Integer>(); // Array of total of professors for each file
 
     /**
      * Constructor
