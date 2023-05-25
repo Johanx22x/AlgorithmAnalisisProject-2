@@ -1,7 +1,5 @@
 package com.algorithmanalysis.secondproject.models;
 
-import java.io.Serializable;
-
 /**
  * Professor class
  *
@@ -9,7 +7,7 @@ import java.io.Serializable;
  * @author Johan Rodríguez
  * @author Aaron González
  */
-public class Professor implements Serializable {
+public class Professor {
     private String name; // The name of the professor
 
     /**

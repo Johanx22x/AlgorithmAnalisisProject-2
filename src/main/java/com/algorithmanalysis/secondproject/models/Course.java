@@ -1,7 +1,5 @@
 package com.algorithmanalysis.secondproject.models;
 
-import java.io.Serializable;
-
 /**
  * Course class
  *
@@ -11,7 +9,7 @@ import java.io.Serializable;
  * @author Aaron González
  * @version 1.0
  */
-public class Course implements Serializable {
+public class Course {
     private String name; // The name of the course
 
     /**

@@ -1,7 +1,5 @@
 package com.algorithmanalysis.secondproject.models;
 
-import java.io.Serializable;
-
 /**
  * Allele
  *
@@ -12,7 +10,7 @@ import java.io.Serializable;
  * @author Aaron González
  * @version 1.0
  */
-public class Allele implements Serializable {
+public class Allele {
     private Professor professor; // The professor
     private Course course; // The course
     private int grade; // Professor's grade for the course

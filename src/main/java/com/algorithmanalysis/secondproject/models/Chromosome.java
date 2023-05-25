@@ -1,6 +1,5 @@
 package com.algorithmanalysis.secondproject.models;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -28,7 +27,7 @@ enum ReturnOption {
  * @author Aaron González
  * @version 1.2
  */
-public class Chromosome implements Serializable {
+public class Chromosome {
     private ArrayList<Allele> alleles = new ArrayList<>();
 
     /**
