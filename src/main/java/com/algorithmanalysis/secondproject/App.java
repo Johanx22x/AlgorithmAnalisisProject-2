@@ -11,6 +11,7 @@ import org.json.simple.parser.ParseException;
 
 import com.algorithmanalysis.secondproject.algorithms.Backtracking;
 import com.algorithmanalysis.secondproject.models.Allele;
+import com.algorithmanalysis.secondproject.models.Chromosome;
 import com.algorithmanalysis.secondproject.storage.LoadJson;
 import com.algorithmanalysis.secondproject.storage.LoadJson.ParsedData;
 
@@ -66,6 +67,21 @@ public class App {
                 System.out.println("The program generated the desired result for the file: " + fileName);
                 System.out.println("Chromosomes: " + genetic);
                 break;
+        }
+
+        System.out.println("\nCrossing chromosome: \n");
+        System.out.println(genetic.getChromosome(1));
+
+        System.out.println("\nwith:\n");
+        System.out.println(genetic.getChromosome(2));
+        System.out.println("\nResult:\n");
+
+        Chromosome result = genetic.crossover(genetic.getChromosome(1), genetic.getChromosome(2));
+        System.out.println(result);
+
+        if (result == null) {
+            System.out.println("The program can't generate the desired result, reason: Invalid data");
+            return;
         }
     }
 }

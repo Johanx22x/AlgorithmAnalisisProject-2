@@ -4,19 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.algorithmanalysis.secondproject.utils.ErrorCodes;
-
-/**
- * ReturnOption enum 
- *
- * This enum is used to decide what to do with the chromosome 
- * during the generation of the random chromosome
- *
- * @author Johan Rodriguez
- * @version 1.0
- */
-enum ReturnOption {
-    VALID, INVALID, NOT_FOUND, BACKTRACK
-}
+import com.algorithmanalysis.secondproject.utils.ReturnOption;
 
 /**
  * Chromosome class
@@ -67,10 +55,10 @@ public class Chromosome {
             Allele allele = alleles.get(randomProfessor*totalOfCourses + i);
 
             // Check if the allele is valid according to the course
-            ReturnOption returnOptionCourse = isValidCourse(allele);
+            ReturnOption returnOptionCourse = isValidCourse(allele, this.alleles);
 
             // Check if the allele is valid according to the professor
-            ReturnOption returnOptionProfessor = isValidProfessor(allele, newAlleles); // Check if the allele is valid
+            ReturnOption returnOptionProfessor = isValidProfessor(allele, newAlleles, this.alleles); // Check if the allele is valid
 
             if (returnOptionCourse == ReturnOption.VALID && returnOptionProfessor == ReturnOption.VALID) { // If the allele is valid
                 newAlleles.add(allele); // Add the allele to the new alleles
@@ -97,7 +85,7 @@ public class Chromosome {
      * @param allele Allele
      * @return ReturnOption enum
      */
-    public ReturnOption isValidCourse(Allele allele) {
+    public static ReturnOption isValidCourse(Allele allele, ArrayList<Allele> alleles) {
         // Check if the grade is valid, couldn't be -1
         // Requirement: A professor with a grade of -1 means that he can't teach that course
         if (allele.getGrade() != -1) {
@@ -125,7 +113,7 @@ public class Chromosome {
      * @param newAlleles New alleles
      * @return ReturnOption enum
      */
-    public ReturnOption isValidProfessor(Allele allele, ArrayList<Allele> newAlleles) {
+    public static ReturnOption isValidProfessor(Allele allele, ArrayList<Allele> newAlleles, ArrayList<Allele> alleles) {
         int totalOfProfessorCourses = 0; // Total of courses of the professor
 
         // Count the total of courses of the professor
@@ -146,7 +134,7 @@ public class Chromosome {
         // Check if there is another professor that can take the course 
         // The same professor is not counted
         // The course grade of the other professor mustn't be -1
-        for (Allele otherAllele : this.alleles) {
+        for (Allele otherAllele : alleles) {
             // If the course is the same and the professor is different and the grade is valid
             if (otherAllele.getCourse().getName().equals(allele.getCourse().getName()) && 
                     !otherAllele.getProfessor().getName().equals(allele.getProfessor().getName()) && 
@@ -166,6 +154,36 @@ public class Chromosome {
     }
 
     /**
+     * Fitness function 
+     *
+     * The fitness of the chromosome is the sum of the grades of the alleles
+     * The grade of the allele is the grade of the professor for the course
+     *
+     * The best fitness is the maximum grade of the professors
+     *
+     * @return Fitness of the chromosome
+     */
+    public int fitness() {
+        int fitness = 0; // Fitness of the chromosome
+                         
+        // Iterate through the alleles
+        for (Allele allele : alleles) {
+            fitness += allele.getGrade(); // Add the grade to the fitness
+        }
+
+        return fitness; // Return the fitness
+    }
+
+    /**
+     * Get Alleles 
+     *
+     * @return Alleles
+     */
+    public ArrayList<Allele> getAlleles() {
+        return alleles;
+    }
+
+    /**
      * Get the chromosome as a string
      *
      * @return Chromosome as a string
@@ -179,26 +197,3 @@ public class Chromosome {
         return chromosome;
     }
 }
-
-//     /**
-//      * Fitness function
-//      *
-//      * @return Fitness of the chromosome
-//      */
-//     public int fitness() { // TODO: fix
-//         int fitness = 0; // Fitness of the chromosome
-
-//         for (Allele allele : alleles) {
-//             Professor professor = allele.getProfessor();
-//             Course course = allele.getCourse();
-//             int grade = allele.getGrade();
-
-//             // Look up the performance measure for the professor-grade combination
-//             // double performance = getPerformanceMeasure(professor, course, grade);
-
-//             // Add the performance measure to the fitness score
-//             // fitness += performance;
-//         }
-
-//         return fitness;
-//     }
