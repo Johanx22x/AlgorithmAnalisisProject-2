@@ -1,10 +1,18 @@
 package com.algorithmanalysis.secondproject;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import com.algorithmanalysis.secondproject.algorithms.Genetic;
+import org.json.simple.parser.ParseException;
+
+import com.algorithmanalysis.secondproject.algorithms.Backtracking;
 import com.algorithmanalysis.secondproject.models.Allele;
 import com.algorithmanalysis.secondproject.storage.LoadJson;
+import com.algorithmanalysis.secondproject.storage.LoadJson.ParsedData;
 
 /**
  * Project: Algorithm Analysis Project 2
@@ -13,16 +21,25 @@ import com.algorithmanalysis.secondproject.storage.LoadJson;
  * Purpose: Main class for the project
  */
 public class App {
-    public static void main(String[] args) {
-        LoadJson loadJson = new LoadJson();
-        ArrayList<ArrayList<Allele>> alleles = loadJson.getAlleles(); // returns an ArrayList<ArrayList<Allele>>
-        ArrayList<Integer> populationSize = loadJson.getPopulation();
-        ArrayList<Integer> totalOfProfessors = loadJson.getTotalOfProfessors();
-        ArrayList<Integer> totalOfCourses = loadJson.getTotalOfCourses();
+    public static void main(String[] args) throws IOException, ParseException {
 
-        Genetic genetic = new Genetic();
-        genetic.setPopulation(alleles.get(0), populationSize.get(0));
-        genetic.createChromosomes(totalOfProfessors.get(0), totalOfCourses.get(0));
-        System.out.println(genetic.toString());
+        ParsedData data = LoadJson.fromFile("data/data1.json");
+        List<List<Allele>> combinations = Backtracking.getCombinations(data.alleles, data.courses);
+        List<List<Allele>> filteredData = combinations.stream()
+                .filter(combination -> {
+
+                    HashMap<String, Integer> timesSeen = new HashMap<>();
+                    for (Allele allele : combination) {
+                        timesSeen.putIfAbsent(allele.getProfessor().getName(), 1);
+                        timesSeen.computeIfPresent(allele.getProfessor().getName(), (k, a) -> a + 1);
+                    }
+
+                    int max = Collections.max(timesSeen.values());
+                    return combination.size() == data.courses && max <= 4;
+                })
+                .sorted(Comparator.comparingInt(combination -> -combination.stream().mapToInt(Allele::getGrade).sum()))
+                .limit(data.population)
+                .collect(Collectors.toList());
+        System.out.println(filteredData);
     }
 }
