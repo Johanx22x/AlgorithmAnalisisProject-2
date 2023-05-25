@@ -17,26 +17,26 @@ import com.algorithmanalysis.secondproject.utils.ErrorCodes;
  */
 public class App {
     public static void main(String[] args) throws IOException, ParseException {
-        ParsedData parsedData = LoadJson.fromFile("data/data0.json"); // Load the data from the json file
+        String fileName = "data/data5.json"; // File name
+        ParsedData parsedData = LoadJson.fromFile(fileName); // Load the data from the file
 
         Genetic genetic = new Genetic(); // Create a new genetic object
         genetic.setPopulation(parsedData.alleles); // Set the population
         genetic.setPopulationSize(parsedData.population); // Set the population size
-        int totalOfProfessors = parsedData.alleles.size() / parsedData.courses; // Calculate the total of professors
-        int totalOfCourses = parsedData.courses; // Calculate the total of courses
-        genetic.createChromosomes(totalOfProfessors, totalOfCourses); // Create the chromosomes
+        genetic.setTotalOfProfessors(parsedData.alleles.size() / parsedData.courses); // Set the total of professors
+        genetic.setTotalOfCourses(parsedData.courses); // Set the total of courses
 
         // Check if the chromosomes were created successfully
-        ErrorCodes error = genetic.createChromosomes(totalOfProfessors, totalOfCourses);
+        ErrorCodes error = genetic.createChromosomes();
         switch (error) {
             case ERROR_INCAPABLE: // The program can't generate the desired result
-                System.out.println("The program can't generate the desired result");
+                System.out.println("The program can't generate the desired result, reason: Invalid data");
                 break;
             case MAX_ATTEMPTS_EXCEEDED: // The program couldn't generate the desired result in the maximum attempts
-                System.out.println("The program can't generate the desired result");
+                System.out.println("The program can't generate the desired result, reason: Maximum attempts exceeded");
                 break;
             case NO_ERROR: // The program generated the desired result
-                System.out.println("Chromosomes generated successfully for file: " + "data.json");
+                System.out.println("The program generated the desired result for the file: " + fileName);
                 System.out.println("Chromosomes: " + genetic);
                 break;
         }

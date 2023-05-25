@@ -12,12 +12,14 @@ import com.algorithmanalysis.secondproject.utils.ErrorCodes;
  * This class is responsible for implementing the genetic algorithm
  *
  * @author Johan Rodriguez
- * @version 1.0
+ * @version 1.1
  */
 public class Genetic {
     private ArrayList<Chromosome> chromosomes = new ArrayList<Chromosome>(); // Final result
     private ArrayList<Allele> population = new ArrayList<Allele>(); // Candidates
     private int populationSize = 0; // Population size, Isn't the same as the ArrayList size, because the ArrayList size is the total of alleles
+    private int totalOfProfessors = 0; // Total of professors
+    private int totalOfCourses = 0; // Total of courses
                             
     /**
      * Create chromosomes
@@ -28,10 +30,10 @@ public class Genetic {
      * @param int totalOfProfessors
      * @param int totalOfCourses
      */
-    public ErrorCodes createChromosomes(int totalOfProfessors, int totalOfCourses) {
+    public ErrorCodes createChromosomes() {
         while (chromosomes.size() < this.populationSize) { // While the chromosomes size is less than the population size
-            Chromosome chromosome = new Chromosome(population); // Create a new chromosome with the candidates
-            if (chromosome.shuffleAlleles(totalOfProfessors, totalOfCourses) == ErrorCodes.NO_ERROR) { // Shuffle the alleles
+            Chromosome chromosome = new Chromosome(this.population); // Create a new chromosome with the candidates
+            if (chromosome.generateRandom(this.totalOfProfessors, this.totalOfCourses) == ErrorCodes.NO_ERROR) { // Shuffle the alleles
                 chromosomes.add(chromosome); // Add the chromosome to the chromosomes array
             } else { // If there is an error
                 chromosomes.clear(); // Clear the chromosomes array
@@ -40,15 +42,6 @@ public class Genetic {
         }
 
         return ErrorCodes.NO_ERROR; // Return no error
-    }
-
-    /**
-     * Get candidate population
-     *
-     * @return ArrayList<Allele> population
-     */
-    public ArrayList<Allele> getPopulation() {
-        return population;
     }
 
     /**
@@ -70,21 +63,21 @@ public class Genetic {
     }
 
     /**
-     * Get chromosomes
+     * Set total of professors 
      *
-     * @return ArrayList<Chromosome> chromosomes
+     * @param int totalOfProfessors
      */
-    public ArrayList<Chromosome> getChromosomes() {
-        return chromosomes;
+    public void setTotalOfProfessors(int totalOfProfessors) {
+        this.totalOfProfessors = totalOfProfessors;
     }
 
     /**
-     * Set chromosomes
+     * Set total of courses
      *
-     * @param ArrayList<Chromosome> chromosomes
+     * @param int totalOfCourses
      */
-    public void setChromosomes(ArrayList<Chromosome> chromosomes) {
-        this.chromosomes = chromosomes;
+    public void setTotalOfCourses(int totalOfCourses) {
+        this.totalOfCourses = totalOfCourses;
     }
 
     /**
