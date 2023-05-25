@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.algorithmanalysis.secondproject.models.Allele;
 import com.algorithmanalysis.secondproject.models.Chromosome;
+import com.algorithmanalysis.secondproject.utils.ErrorCodes;
 
 /**
  * Genetic algorithm
@@ -28,14 +29,20 @@ public class Genetic {
      * @param int totalOfProfessors
      * @param int totalOfCourses
      */
-    public void createChromosomes(int totalOfProfessors, int totalOfCourses) {
+    public ErrorCodes createChromosomes(int totalOfProfessors, int totalOfCourses) {
         // Do a loop until the program generate the desired result
 
         while (chromosomes.size() < this.populationSize) {
             Chromosome chromosome = new Chromosome(population);
-            chromosome.shuffleAlleles(totalOfProfessors, totalOfCourses);
-            chromosomes.add(chromosome);
+            if (chromosome.shuffleAlleles(totalOfProfessors, totalOfCourses) == ErrorCodes.NO_ERROR) {
+                chromosomes.add(chromosome);
+            } else {
+                chromosomes.clear();
+                return ErrorCodes.ERROR_INCAPABLE;
+            }
         }
+
+        return ErrorCodes.NO_ERROR;
     }
 
     /**
