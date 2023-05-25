@@ -21,6 +21,7 @@ public class LoadJson {
     ArrayList<Integer> population = new ArrayList<Integer>(); // Array of population for each file
     ArrayList<Integer> totalOfCourses = new ArrayList<Integer>(); // Array of total of courses for each file
     ArrayList<Integer> totalOfProfessors = new ArrayList<Integer>(); // Array of total of professors for each file
+    ArrayList<String> files = new ArrayList<String>(); // Array of files
 
     /**
      * Constructor
@@ -68,11 +69,21 @@ public class LoadJson {
     }
 
     /**
+     * Get the files array 
+     *
+     * @return ArrayList<String> The files array
+     */
+    public ArrayList<String> getFiles() {
+        return files;
+    }
+
+    /**
      * Load the json files and parse them into Allele objects
      */
     private void loadJson() {
         for (int i = 0; i <= 5; i++) {
             String file = "data/data" + i + ".json";
+            files.add(file);
             // Create an array of alleles for each files and add it to the alleles array 
             // Get the professor name and grades from the json file and add it to a new Allele object
             // Add the new Allele object to the alleles array 
@@ -84,6 +95,7 @@ public class LoadJson {
                 this.totalOfProfessors.add(totalOfProfessors);
                 ArrayList<Allele> allelesArray = new ArrayList<Allele>();
                 population.add(((Long) jo.get("population")).intValue());
+                int totalOfCourses = 0;
                 for (int j = 0; j < professors.size(); j++) {
                     JSONObject professor = (JSONObject) professors.get(j);
                     String name = (String) professor.get("name");
@@ -97,8 +109,9 @@ public class LoadJson {
                         Allele allele = new Allele(professorObj, courseObj, grade);
                         allelesArray.add(allele);
                     }
-                    totalOfCourses.add(grades.size());
+                    totalOfCourses = grades.size();
                 }
+                this.totalOfCourses.add(totalOfCourses);
                 alleles.add(allelesArray);
             } catch (Exception e) {
                 e.printStackTrace();
