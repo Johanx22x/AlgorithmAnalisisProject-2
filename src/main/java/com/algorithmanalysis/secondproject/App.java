@@ -24,19 +24,22 @@ public class App {
         System.out.println(totalOfCourses);
         ArrayList<String> files = loadJson.getFiles();
 
+        Genetic genetic = new Genetic(); // Create a new genetic object
         for (ArrayList<Allele> allele : alleles) {
-            Genetic genetic = new Genetic();
-            genetic.setPopulation(allele, populationSize.get(alleles.indexOf(allele)));
-            genetic.createChromosomes(totalOfProfessors.get(alleles.indexOf(allele)), totalOfCourses.get(alleles.indexOf(allele)));
+            genetic.setPopulation(allele); // Set the population
+            genetic.setPopulationSize(populationSize.get(alleles.indexOf(allele))); // Set the population size
+            genetic.createChromosomes(totalOfProfessors.get(alleles.indexOf(allele)), totalOfCourses.get(alleles.indexOf(allele))); // Create the chromosomes
+
+            // Check if the chromosomes were created successfully
             ErrorCodes error = genetic.createChromosomes(totalOfProfessors.get(alleles.indexOf(allele)), totalOfCourses.get(alleles.indexOf(allele)));
             switch (error) {
-                case ERROR_INCAPABLE:
+                case ERROR_INCAPABLE: // The program can't generate the desired result
                     System.out.println("The program can't generate the desired result");
                     break;
-                case MAX_ATTEMPTS_EXCEEDED:
+                case MAX_ATTEMPTS_EXCEEDED: // The program couldn't generate the desired result in the maximum attempts
                     System.out.println("The program can't generate the desired result");
                     break;
-                case NO_ERROR:
+                case NO_ERROR: // The program generated the desired result
                     System.out.println("Chromosomes generated successfully for file: " + files.get(alleles.indexOf(allele)));
                     System.out.println("Chromosomes: " + genetic);
                     break;

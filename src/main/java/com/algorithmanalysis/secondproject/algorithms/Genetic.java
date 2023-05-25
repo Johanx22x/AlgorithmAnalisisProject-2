@@ -17,9 +17,8 @@ import com.algorithmanalysis.secondproject.utils.ErrorCodes;
 public class Genetic {
     private ArrayList<Chromosome> chromosomes = new ArrayList<Chromosome>(); // Final result
     private ArrayList<Allele> population = new ArrayList<Allele>(); // Candidates
-    private int populationSize = 0; // Population size, Isn't the same as the ArrayList size,
-    // because the ArrayList size is the total of alleles
-
+    private int populationSize = 0; // Population size, Isn't the same as the ArrayList size, because the ArrayList size is the total of alleles
+                            
     /**
      * Create chromosomes
      *
@@ -30,19 +29,17 @@ public class Genetic {
      * @param int totalOfCourses
      */
     public ErrorCodes createChromosomes(int totalOfProfessors, int totalOfCourses) {
-        // Do a loop until the program generate the desired result
-
-        while (chromosomes.size() < this.populationSize) {
-            Chromosome chromosome = new Chromosome(population);
-            if (chromosome.shuffleAlleles(totalOfProfessors, totalOfCourses) == ErrorCodes.NO_ERROR) {
-                chromosomes.add(chromosome);
-            } else {
-                chromosomes.clear();
-                return ErrorCodes.ERROR_INCAPABLE;
+        while (chromosomes.size() < this.populationSize) { // While the chromosomes size is less than the population size
+            Chromosome chromosome = new Chromosome(population); // Create a new chromosome with the candidates
+            if (chromosome.shuffleAlleles(totalOfProfessors, totalOfCourses) == ErrorCodes.NO_ERROR) { // Shuffle the alleles
+                chromosomes.add(chromosome); // Add the chromosome to the chromosomes array
+            } else { // If there is an error
+                chromosomes.clear(); // Clear the chromosomes array
+                return ErrorCodes.ERROR_INCAPABLE; // Return an error
             }
         }
 
-        return ErrorCodes.NO_ERROR;
+        return ErrorCodes.NO_ERROR; // Return no error
     }
 
     /**
@@ -55,13 +52,20 @@ public class Genetic {
     }
 
     /**
-     * Set candidate population and population size
+     * Set candidate population
      *
      * @param ArrayList<Allele> population
-     * @param int               populationSize
      */
-    public void setPopulation(ArrayList<Allele> population, int populationSize) {
+    public void setPopulation(ArrayList<Allele> population) {
         this.population = population;
+    }
+
+    /**
+     * Set population size
+     *
+     * @param int populationSize
+     */
+    public void setPopulationSize(int populationSize) {
         this.populationSize = populationSize;
     }
 
