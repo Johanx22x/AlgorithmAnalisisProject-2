@@ -6,23 +6,23 @@ import com.algorithmanalysis.secondproject.models.Allele;
 import com.algorithmanalysis.secondproject.models.Chromosome;
 
 /**
- * Genetic algorithm 
+ * Genetic algorithm
  *
- * This class is responsible for implementing the genetic algorithm 
+ * This class is responsible for implementing the genetic algorithm
  *
  * @author Johan Rodriguez
  * @version 1.0
  */
 public class Genetic {
-    ArrayList<Chromosome> chromosomes = new ArrayList<Chromosome>(); // Final result
-    ArrayList<Allele> population = new ArrayList<Allele>(); // Candidates
-    int populationSize = 0; // Population size, Isn't the same as the ArrayList size,
-                            // because the ArrayList size is the total of alleles
+    private ArrayList<Chromosome> chromosomes = new ArrayList<Chromosome>(); // Final result
+    private ArrayList<Allele> population = new ArrayList<Allele>(); // Candidates
+    private int populationSize = 0; // Population size, Isn't the same as the ArrayList size,
+    // because the ArrayList size is the total of alleles
 
     /**
-     * Create chromosomes 
+     * Create chromosomes
      *
-     * This method is responsible for creating the chromosomes with the candidates 
+     * This method is responsible for creating the chromosomes with the candidates
      * and the population size, and then shuffle the alleles
      *
      * @param int totalOfProfessors
@@ -30,7 +30,7 @@ public class Genetic {
      */
     public void createChromosomes(int totalOfProfessors, int totalOfCourses) {
         // Do a loop until the program generate the desired result
-        
+
         while (chromosomes.size() < this.populationSize) {
             Chromosome chromosome = new Chromosome(population);
             chromosome.shuffleAlleles(totalOfProfessors, totalOfCourses);
@@ -48,10 +48,10 @@ public class Genetic {
     }
 
     /**
-     * Set candidate population and population size 
+     * Set candidate population and population size
      *
-     * @param ArrayList<Allele> population 
-     * @param int populationSize
+     * @param ArrayList<Allele> population
+     * @param int               populationSize
      */
     public void setPopulation(ArrayList<Allele> population, int populationSize) {
         this.population = population;
@@ -59,7 +59,7 @@ public class Genetic {
     }
 
     /**
-     * Get chromosomes 
+     * Get chromosomes
      *
      * @return ArrayList<Chromosome> chromosomes
      */
@@ -68,7 +68,7 @@ public class Genetic {
     }
 
     /**
-     * Set chromosomes 
+     * Set chromosomes
      *
      * @param ArrayList<Chromosome> chromosomes
      */
