@@ -110,6 +110,6 @@ public class Allele implements Serializable {
      * @return The string representation of the Allele
      */
     public String toString() {
-        return "Professor: " + this.professor.getName() + " Course: " + this.course.getName() + " Grade: " + this.grade;
+        return "Professor: " + this.professor.getName() + ", Course: " + this.course.getName() + ", Grade: " + this.grade;
     }
 }

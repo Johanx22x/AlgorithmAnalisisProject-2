@@ -72,4 +72,47 @@ public class Chromosome implements Serializable {
         }
         return chromosome;
     }
+
+    /**
+     * Shuffle the alleles of the chromosome 
+     *
+     * @param totalOfProfessors Total of professors 
+     * @param totalOfCourses Total of courses
+     */
+    public void shuffleAlleles(int totalOfProfessors, int totalOfCourses) { 
+        ArrayList<Allele> newAlleles = new ArrayList<>(); // New alleles
+
+        for (int i = 0; i < totalOfCourses; i++) {
+            // Get a random number between 0 and totalOfProfessors
+            int random = (int) (Math.random() * totalOfProfessors);
+
+            // Add the allele to the new alleles
+            newAlleles.add(alleles.get(random*totalOfCourses + i));
+        }
+
+        alleles = newAlleles; // Set the new alleles
+    }
+
+    /**
+     * Fitness function
+     *
+     * @return Fitness of the chromosome
+     */
+    public int fitness() { // TODO: fix
+        int fitness = 0; // Fitness of the chromosome
+
+        for (Allele allele : alleles) {
+            Professor professor = allele.getProfessor();
+            Course course = allele.getCourse();
+            int grade = allele.getGrade();
+
+            // Look up the performance measure for the professor-grade combination
+            double performance = getPerformanceMeasure(professor, course, grade);
+
+            // Add the performance measure to the fitness score
+            fitness += performance;
+        }
+
+        return fitness;
+    }
 }

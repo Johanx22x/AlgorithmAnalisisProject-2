@@ -19,6 +19,8 @@ import org.json.simple.parser.*;
 public class LoadJson {
     ArrayList<ArrayList<Allele>> alleles = new ArrayList<ArrayList<Allele>>(); // Array of alleles for each file
     ArrayList<Integer> population = new ArrayList<Integer>(); // Array of population for each file
+    ArrayList<Integer> totalOfCourses = new ArrayList<Integer>(); // Array of total of courses for each file
+    ArrayList<Integer> totalOfProfessors = new ArrayList<Integer>(); // Array of total of professors for each file
 
     /**
      * Constructor
@@ -36,6 +38,24 @@ public class LoadJson {
      */
     public ArrayList<ArrayList<Allele>> getAlleles() {
         return alleles;
+    }
+
+    /**
+     * Get the total of courses array 
+     *
+     * @return ArrayList<Integer> The total of courses array
+     */
+    public ArrayList<Integer> getTotalOfCourses() {
+        return totalOfCourses;
+    }
+
+    /**
+     * Get the total of professors array 
+     *
+     * @return ArrayList<Integer> The total of professors array
+     */
+    public ArrayList<Integer> getTotalOfProfessors() {
+        return totalOfProfessors;
     }
 
     /** 
@@ -60,6 +80,8 @@ public class LoadJson {
                 Object obj = new JSONParser().parse(new FileReader(file));
                 JSONObject jo = (JSONObject) obj;
                 JSONArray professors = (JSONArray) jo.get("professors");
+                int totalOfProfessors = professors.size();
+                this.totalOfProfessors.add(totalOfProfessors);
                 ArrayList<Allele> allelesArray = new ArrayList<Allele>();
                 population.add(((Long) jo.get("population")).intValue());
                 for (int j = 0; j < professors.size(); j++) {
@@ -68,11 +90,14 @@ public class LoadJson {
                     JSONArray grades = (JSONArray) professor.get("grades");
                     for (int k = 0; k < grades.size(); k++) {
                         Professor professorObj = new Professor(name);
+                        k = k + 1;
                         Course courseObj = new Course("course" + k);
+                        k = k - 1;
                         int grade = ((Long) grades.get(k)).intValue();
                         Allele allele = new Allele(professorObj, courseObj, grade);
                         allelesArray.add(allele);
                     }
+                    totalOfCourses.add(grades.size());
                 }
                 alleles.add(allelesArray);
             } catch (Exception e) {
