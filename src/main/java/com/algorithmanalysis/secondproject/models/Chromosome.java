@@ -80,6 +80,33 @@ public class Chromosome {
     }
 
     /**
+     * Check is an allele is valid from mutation in a chromosome
+     *
+     * @param allele Allele 
+     * @return Boolean
+     */
+    public boolean isOptimalAllele(Allele allele) {
+        // Check the grade of the allele 
+        if (allele.getGrade() == -1) { // If the grade is -1
+            return false; // Return false
+        }
+
+        // Check if the professor has more than 4 courses 
+        int totalOfProfessorCourses = 0; // Total of courses of the professor 
+        for (Allele otherAllele : alleles) {
+            if (otherAllele.getProfessor().getName().equals(allele.getProfessor().getName())) { // If the professor is the same
+                totalOfProfessorCourses++; // Increase the total of courses
+            }
+        }
+
+        if (totalOfProfessorCourses > 4) { // If the total of courses is greater than 4
+            return false; // Return false
+        }
+
+        return false; // Return false
+    }
+
+    /**
      * Check if the allele is valid for the course
      *
      * @param allele Allele

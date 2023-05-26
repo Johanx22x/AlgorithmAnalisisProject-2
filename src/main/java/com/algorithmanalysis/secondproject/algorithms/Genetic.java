@@ -21,10 +21,14 @@ public class Genetic {
     private int populationSize = 0; // Population size, Isn't the same as the ArrayList size, because the ArrayList size is the total of alleles
     private int totalOfProfessors = 0; // Total of professors
     private int totalOfCourses = 0; // Total of courses
+    private int totalOfGenerations = 0; // Total of generations
 
     // PMX variables
     private int pmxPoint1 = 0; // PMX point 1 
     private int pmxPoint2 = 0; // PMX point 2
+
+    // Result
+    private Chromosome result = null; // Result
                             
     /**
      * Create chromosomes
@@ -50,7 +54,78 @@ public class Genetic {
             }
         }
 
+        totalOfGenerations = chromosomes.size() * 2; // Set the total of generations
+
         return ErrorCodes.NO_ERROR; // Return no error
+    }
+
+    /**
+     * Get random chromosome 
+     *
+     * This method is responsible for selecting a random chromosome from the population 
+     *
+     * @return {@link Chromosome} chromosome
+     */
+    public Chromosome getRandomChromosome() {
+        return chromosomes.get((int) (Math.random() * chromosomes.size())); // Return a random chromosome 
+    }
+
+    /**
+     * Selection 
+     *
+     * This method is responsible for selecting the best chromosomes 
+     */
+    public Chromosome selection() {
+        int tournamentSize = 2; // Tournament size
+        Chromosome winner = null; // Best chromosome 
+
+        // Iterate through the chromosomes
+        for (int i = 0; i < tournamentSize; i++) {
+        Chromosome contender = getRandomChromosome(); // Get a random chromosome
+            
+            if (winner == null || contender.fitness() > winner.fitness()) {
+                winner = contender;
+            }
+        }
+        
+        return winner;
+    }
+
+    /**
+     * Mutation 
+     *
+     * This method is responsible for mutating the chromosomes
+     *
+     * @param Chromosome chromosome 
+     * @return {@link Chromosome} result
+     */
+    public Chromosome mutation(Chromosome chromosome) {
+        // Define maxAttempts
+        int maxAttempts = 100;
+
+        // Get a random allele from population
+        Allele allele = this.population.get((int) (Math.random() * (this.totalOfCourses * this.totalOfProfessors)));
+
+        while (chromosome.isOptimalAllele(allele) && maxAttempts > 0) { // While the allele is optimal and maxAttempts is greater than 0
+            allele = this.population.get((int) (Math.random() * (this.totalOfCourses * this.totalOfProfessors)));
+            maxAttempts--;
+        }
+
+        if (maxAttempts == 0) { // If maxAttempts is equal to 0
+            // Abort the mutation
+            System.out.println("Mutation aborted");
+            return chromosome; // Return the chromosome
+        }
+
+        // Change the result allele on the same course index
+        for (int i = 0; i < chromosome.getAlleles().size(); i++) {
+            if (chromosome.getAlleles().get(i).getCourse().getIndex() == allele.getCourse().getIndex()) {
+                chromosome.getAlleles().set(i, allele);
+            }
+        }
+
+
+        return chromosome; // Return the chromosome
     }
 
     /**
@@ -92,31 +167,6 @@ public class Genetic {
 
         return new Chromosome(alleles); // Return the new chromosome
     }
-
-//     /**
-//      * Show differences between chromosomes 
-//      *
-//      * This method is responsible for showing the differences between two chromosomes 
-//      *
-//      * @param {@link Chromosome} chromosome1
-//      * @param {@link Chromosome} chromosome2
-//      * @return String result
-//      */
-//     public String showDifferences(Chromosome chromosome1, Chromosome chromosome2) {
-//         String result = ""; // Result
-
-//         ArrayList<Allele> alleles1 = chromosome1.getAlleles(); // Alleles of the first chromosome
-//         ArrayList<Allele> alleles2 = chromosome2.getAlleles(); // Alleles of the second chromosome
-
-//         // Iterate through the alleles
-//         for (int i = 0; i < alleles1.size(); i++) {
-//             if (alleles1.get(i).getCourse() != alleles2.get(i).getCourse()) { // If the course is different
-//                 result += "Course " + alleles1.get(i).getCourse() + " is different\n"; // Add the course to the result
-//             }
-//         }
-
-//         return result; // Return the result
-//     }
 
     /**
      * Set candidate population
@@ -162,6 +212,33 @@ public class Genetic {
      */
     public Chromosome getChromosome(int index) {
         return chromosomes.get(index);
+    }
+
+    /**
+     * Get population 
+     *
+     * @return ArrayList<Allele> population
+     */
+    public ArrayList<Allele> getPopulation() {
+        return population;
+    }
+
+    /**
+     * Get result
+     *
+     * @return {@link Chromosome} result
+     */
+    public Chromosome getResult() {
+        return result;
+    }
+
+    /**
+     * Get total of generations 
+     *
+     * @return int totalOfGenerations
+     */
+    public int getTotalOfGenerations() {
+        return totalOfGenerations;
     }
 
     /**

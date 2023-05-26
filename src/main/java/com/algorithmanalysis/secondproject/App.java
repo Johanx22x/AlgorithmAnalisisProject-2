@@ -44,11 +44,30 @@ public class App {
                 .limit(data.population)
                 .collect(Collectors.toList());
         System.out.println(filteredData);
+
+
+        // Genetic algorithm
         
         String fileName = "data/data0.json"; // File name
+        Genetic genetic = new Genetic(); // Create a new genetic object
+        ErrorCodes error = runGenetic(genetic, fileName); // Run the genetic algorithm
+        if (error == ErrorCodes.NO_ERROR) { // If there is no error
+            System.out.println("The result is: " + genetic.getResult()); // Print the result
+        } else { // If there is an error
+            System.out.println("The program can't generate the desired result, reason: " + error); // Print the error
+        }
+    }
+
+    /**
+     * Run the genetic algorithm 
+     *
+     * @param genetic The genetic object
+     * @param fileName The file name
+     * @return The error code
+     */
+    private static ErrorCodes runGenetic(Genetic genetic, String fileName) throws IOException, ParseException {
         ParsedData parsedData = LoadJson.fromFile(fileName); // Load the data from the file
 
-        Genetic genetic = new Genetic(); // Create a new genetic object
         genetic.setPopulation(parsedData.alleles); // Set the population
         genetic.setPopulationSize(parsedData.population); // Set the population size
         genetic.setTotalOfProfessors(parsedData.alleles.size() / parsedData.courses); // Set the total of professors
@@ -56,32 +75,43 @@ public class App {
 
         // Check if the chromosomes were created successfully
         ErrorCodes error = genetic.createChromosomes();
-        switch (error) {
-            case ERROR_INCAPABLE: // The program can't generate the desired result
-                System.out.println("The program can't generate the desired result, reason: Invalid data");
-                break;
-            case MAX_ATTEMPTS_EXCEEDED: // The program couldn't generate the desired result in the maximum attempts
-                System.out.println("The program can't generate the desired result, reason: Maximum attempts exceeded");
-                break;
-            case NO_ERROR: // The program generated the desired result
-                System.out.println("The program generated the desired result for the file: " + fileName);
-                System.out.println("Chromosomes: " + genetic);
-                break;
+        if (error != ErrorCodes.NO_ERROR) {
+            return error;
         }
 
-        System.out.println("\nCrossing chromosome: \n");
-        System.out.println(genetic.getChromosome(1));
+        int totalOfGenerations = genetic.getTotalOfGenerations(); // Get the total of generations
 
-        System.out.println("\nwith:\n");
-        System.out.println(genetic.getChromosome(2));
-        System.out.println("\nResult:\n");
+        // Start the genetic algorithm
+        while (totalOfGenerations > 0) {
 
-        Chromosome result = genetic.crossover(genetic.getChromosome(1), genetic.getChromosome(2));
-        System.out.println(result);
+            // Algorithm logic here
 
-        if (result == null) {
-            System.out.println("The program can't generate the desired result, reason: Invalid data");
-            return;
+            totalOfGenerations--; // Decrease the total of generations
         }
+
+        Chromosome parent1 = genetic.selection();
+        System.out.println("Parent 1: " + parent1);
+
+        Chromosome parent2 = genetic.selection();
+        System.out.println("Parent 2: " + parent2);
+
+        // Perform crossover with the selected parents
+        Chromosome offspring = genetic.crossover(parent1, parent2);
+        System.out.println("Offspring: " + offspring);
+
+        if (offspring != null) {
+            System.out.println("The result is valid according to the requirements");
+
+            // Perform mutation with the offspring 
+            Chromosome mutatedOffspring = genetic.mutation(offspring);
+            
+            if (mutatedOffspring != null) {
+                System.out.println("Mutated offspring: " + mutatedOffspring);
+            } else {
+                System.out.println("The offspring couldn't be mutated");
+            }
+        }
+        
+        return ErrorCodes.NO_ERROR;
     }
 }

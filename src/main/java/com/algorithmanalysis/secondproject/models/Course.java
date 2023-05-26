@@ -11,6 +11,7 @@ package com.algorithmanalysis.secondproject.models;
  */
 public class Course {
     private String name; // The name of the course
+    private int index; // The index of the course
 
     /**
      * Constructor
@@ -19,6 +20,8 @@ public class Course {
      */
     public Course(String name) {
         this.name = name;
+        // The index is the last character of the name 
+        this.index = Integer.parseInt(name.substring(name.length() - 1));
     }
 
     /**
@@ -37,6 +40,15 @@ public class Course {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Get the course index 
+     *
+     * @return The course index
+     */
+    public int getIndex() {
+        return this.index;
     }
 
     /**
