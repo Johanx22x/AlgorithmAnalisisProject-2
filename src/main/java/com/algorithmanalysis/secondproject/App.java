@@ -3,9 +3,7 @@ package com.algorithmanalysis.secondproject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,12 +11,11 @@ import org.json.simple.parser.ParseException;
 
 import com.algorithmanalysis.secondproject.algorithms.Backtracking;
 import com.algorithmanalysis.secondproject.algorithms.Dynamic;
+import com.algorithmanalysis.secondproject.algorithms.Genetic;
 import com.algorithmanalysis.secondproject.models.Allele;
 import com.algorithmanalysis.secondproject.models.Chromosome;
 import com.algorithmanalysis.secondproject.storage.LoadJson;
 import com.algorithmanalysis.secondproject.storage.LoadJson.ParsedData;
-
-import com.algorithmanalysis.secondproject.algorithms.Genetic;
 import com.algorithmanalysis.secondproject.utils.ErrorCodes;
 
 /**
@@ -31,32 +28,15 @@ public class App {
     static boolean verbose = false;
 
     public static void main(String[] args) throws IOException, ParseException {
-        ArrayList<String> files = getFiles();
-
         ParsedData data = LoadJson.fromFile("data/data0.json");
-        List<List<Allele>> combinations = Backtracking.getCombinations(data.alleles, data.courses);
-        Optional<List<Allele>> filteredData = combinations.stream()
-                .filter(combination -> {
-
-                    HashMap<String, Integer> timesSeen = new HashMap<>();
-                    HashMap<String, Integer> courseSeen = new HashMap<>();
-                    for (Allele allele : combination) {
-                        timesSeen.putIfAbsent(allele.getProfessor().getName(), 1);
-                        timesSeen.computeIfPresent(allele.getProfessor().getName(), (k, a) -> a + 1);
-                        courseSeen.putIfAbsent(allele.getCourse().getName(), 1);
-                        courseSeen.computeIfPresent(allele.getCourse().getName(), (k, a) -> a + 1);
-                    }
-
-                    int max = Collections.max(timesSeen.values());
-                    int maxCourse = Collections.max(courseSeen.values());
-
-                    return combination.size() == data.courses && max <= 4 && maxCourse == 1;
-                })
+        Optional<List<Allele>> filteredData = Backtracking.getCombinations(data.alleles,
+                data.courses).stream()
                 .sorted(Comparator.comparingInt(combination -> -combination.stream().mapToInt(Allele::getGrade).sum()))
                 .findFirst();
-                // .limit(data.population)
-                // .collect(Collectors.toList());
-                
+
+        System.out.println(filteredData);
+        ArrayList<String> files = getFiles();
+
         if (filteredData.isPresent()) {
             Chromosome chromosome = new Chromosome(filteredData.get());
             System.out.println(chromosome);
@@ -78,7 +58,7 @@ public class App {
 
         // Genetic algorithm
         System.out.println("\nGenetic algorithm:");
-        
+
         for (String file : files) {
             Chromosome bestResult = null; // The overall best result
             System.out.println("\nFile: " + file); // Print the file name
@@ -89,16 +69,17 @@ public class App {
                 ErrorCodes error = runGenetic(genetic, file); // Run the genetic algorithm
 
                 if (error == ErrorCodes.NO_ERROR) { // If there is no error
-                    System.out.print("\tTry " + (int)(count+1) + ":"); // Print the try number
-                                                                       
+                    System.out.print("\tTry " + (int) (count + 1) + ":"); // Print the try number
+
                     if (genetic.getResult() == null) { // If there is no result
                         printError(ErrorCodes.ERROR_INCAPABLE); // Print the error
                         continue;
                     }
 
                     System.out.println("\tThe fitness is: " + genetic.getFitness()); // Print the fitness
-                                                                                     
-                    if (bestResult == null || genetic.getFitness() > bestResult.fitness()) { // If the fitness is better than the best result
+
+                    if (bestResult == null || genetic.getFitness() > bestResult.fitness()) { // If the fitness is better
+                                                                                             // than the best result
                         bestResult = genetic.getResult(); // Set the best result
                     }
                 } else { // If there is an error
@@ -115,9 +96,9 @@ public class App {
     }
 
     /**
-     * Run the genetic algorithm 
+     * Run the genetic algorithm
      *
-     * @param genetic The genetic object
+     * @param genetic  The genetic object
      * @param fileName The file name
      * @return The error code
      */
@@ -139,7 +120,8 @@ public class App {
 
         // Start the genetic algorithm
         while (totalOfGenerations > 0) {
-            // Iterate over the chromosomes to select, crossover, mutate and evaluate the fitness
+            // Iterate over the chromosomes to select, crossover, mutate and evaluate the
+            // fitness
             for (int i = 0; i < genetic.getChromosomes().size(); i++) {
                 for (int j = 0; j < genetic.getChromosomes().size(); j++) {
                     if (i == j) {
@@ -190,14 +172,13 @@ public class App {
             totalOfGenerations--; // Decrease the total of generations
         }
 
-
         genetic.setResult(genetic.getChromosome(0));
         for (int i = 1; i < genetic.getChromosomes().size(); i++) {
-            if (genetic.getChromosome(i).fitness() > genetic.getChromosome(i-1).fitness()) {
+            if (genetic.getChromosome(i).fitness() > genetic.getChromosome(i - 1).fitness()) {
                 genetic.setResult(genetic.getChromosome(i));
             }
         }
-        
+
         return ErrorCodes.NO_ERROR;
     }
 
@@ -213,7 +194,7 @@ public class App {
         ArrayList<String> files = new ArrayList<>(); // Create a list of files
         for (File file : listOfFiles) { // For each file
             if (file.isFile()) { // If the file is a file
-                // Add the full path of the file to the list of files 
+                // Add the full path of the file to the list of files
                 files.add(file.getAbsolutePath());
             }
         }
