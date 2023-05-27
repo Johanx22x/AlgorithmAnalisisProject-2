@@ -2,6 +2,8 @@ package com.algorithmanalysis.secondproject.algorithms;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.algorithmanalysis.secondproject.models.Allele;
 
@@ -24,7 +26,9 @@ public class Backtracking {
      */
     public static List<List<Allele>> getCombinations(List<Allele> elements, int combinationSize) {
         List<List<Allele>> combinations = new ArrayList<>();
+        System.out.println("Generating combinations");
         generateCombinations(elements, combinationSize, new ArrayList<>(), combinations, 0);
+        System.out.println("Combinations successfully generated!");
         return combinations;
     }
 
@@ -49,7 +53,7 @@ public class Backtracking {
         for (int i = start; i <= elements.size() - combinationSize; i++) {
             Allele element = elements.get(i);
             if (!currentCombination.contains(element)
-                    && isUniqueGradeCombination(currentCombination, element)) {
+                    && isValidCombination(currentCombination, element)) {
                 currentCombination.add(element);
                 generateCombinations(elements, combinationSize - 1, currentCombination, combinations, i + 1);
                 currentCombination.remove(currentCombination.size() - 1);
@@ -66,10 +70,14 @@ public class Backtracking {
      *
      * @return Whether or not the combination was valid
      */
-    private static boolean isUniqueGradeCombination(List<Allele> currentCombination, Allele allele) {
-        return currentCombination.stream()
-                .map(Allele::getCourse)
-                .noneMatch(grade -> grade.equals(allele.getCourse()));
+    private static boolean isValidCombination(List<Allele> currentCombination, Allele allele) {
+        return currentCombination.stream().map(Allele::getCourse)
+                .noneMatch(course -> course.getName().equals(allele.getCourse().getName()))
+                && currentCombination.stream().map(Allele::getProfessor)
+                        .collect(Collectors.groupingBy(i -> i, Collectors.counting()))
+                        .values()
+                        .stream()
+                        .noneMatch(count -> count > 4);
     }
 
 }
