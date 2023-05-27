@@ -54,7 +54,9 @@ public class Genetic {
             }
         }
 
-        totalOfGenerations = chromosomes.size() * 1000; // Set the total of generations
+        // Calculate the total of generations (using a linear function calculated based on the first file population size and the last file population size)
+        // To approximate the desired total of generations, we use the following formula: (19700/17) * (populationSize) - (54000/17)
+        totalOfGenerations = (int) ((int)(19700/17) * (this.populationSize) - (int)(54000/17)); // Calculate the total of generations
 
         return ErrorCodes.NO_ERROR; // Return no error
     }
@@ -73,22 +75,10 @@ public class Genetic {
     /**
      * Selection 
      *
-     * This method is responsible for selecting the best chromosomes 
+     * @return {@link Chromosome} result
      */
-    public Chromosome selection() {
-        int tournamentSize = 2; // Tournament size
-        Chromosome winner = null; // Best chromosome 
-
-        // Iterate through the chromosomes
-        for (int i = 0; i < tournamentSize; i++) {
-        Chromosome contender = getRandomChromosome(); // Get a random chromosome
-            
-            if (winner == null || contender.fitness() > winner.fitness()) {
-                winner = contender;
-            }
-        }
-        
-        return winner;
+    public Chromosome selection(int index) {
+        return chromosomes.get(index); // Return the chromosome
     }
 
     /**
@@ -123,7 +113,6 @@ public class Genetic {
                 chromosome.getAlleles().set(i, allele);
             }
         }
-
 
         return chromosome; // Return the chromosome
     }

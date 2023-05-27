@@ -3,6 +3,7 @@ package com.algorithmanalysis.secondproject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -126,40 +127,53 @@ public class App {
 
         // Start the genetic algorithm
         while (totalOfGenerations > 0) {
-            // Selection
-            Chromosome parent1 = genetic.selection();
-            Chromosome parent2 = genetic.selection();
+            // Iterate over the chromosomes to select, crossover, mutate and evaluate the fitness
+            for (int i = 0; i < genetic.getChromosomes().size(); i++) {
+                for (int j = 0; j < genetic.getChromosomes().size(); j++) {
+                    if (i == j) {
+                        continue;
+                    }
 
-            // Crossover
-            Chromosome offspring = genetic.crossover(parent1, parent2);
+                    // Selection
+                    Chromosome parent1 = genetic.selection(i);
+                    Chromosome parent2 = genetic.selection(j);
 
-            if (offspring == null) {
-                totalOfGenerations--;
-                continue;
-            }
+                    // Crossover
+                    Chromosome offspring = genetic.crossover(parent1, parent2);
 
-            // Mutation
-            offspring = genetic.mutation(offspring);
+                    if (offspring == null) {
+                        totalOfGenerations--;
+                        continue;
+                    }
 
-            // Evaluate fitness
-            int offspringFitness = offspring.fitness(); // Or use a custom fitness evaluation method
+                    // Mutation
+                    Chromosome offspringMutated = genetic.mutation(offspring);
 
-            // Update population
-            int leastFitIndex = 0;
-            int leastFitFitness = Integer.MAX_VALUE;
+                    if (offspringMutated.fitness() > offspring.fitness()) {
+                        offspring = offspringMutated;
+                    }
 
-            for (int i = 0; i < genetic.getPopulationSize(); i++) {
-                Chromosome chromosome = genetic.getChromosome(i);
-                int chromosomeFitness = chromosome.fitness(); // Or use a custom fitness evaluation method
+                    // Evaluate fitness
+                    int offspringFitness = offspring.fitness(); // Or use a custom fitness evaluation method
 
-                if (chromosomeFitness < leastFitFitness) {
-                    leastFitFitness = chromosomeFitness;
-                    leastFitIndex = i;
+                    // Update population
+                    int leastFitIndex = 0;
+                    int leastFitFitness = Integer.MAX_VALUE;
+
+                    for (int k = 0; k < genetic.getChromosomes().size(); k++) {
+                        Chromosome chromosome = genetic.getChromosome(k);
+                        int chromosomeFitness = chromosome.fitness(); // Or use a custom fitness evaluation method
+
+                        if (chromosomeFitness < leastFitFitness) {
+                            leastFitFitness = chromosomeFitness;
+                            leastFitIndex = k;
+                        }
+                    }
+
+                    if (offspringFitness > leastFitFitness) {
+                        genetic.getChromosome(leastFitIndex).setAlleles(offspring.getAlleles());
+                    }
                 }
-            }
-
-            if (offspringFitness > leastFitFitness) {
-                genetic.getChromosome(leastFitIndex).setAlleles(offspring.getAlleles());
             }
 
             totalOfGenerations--; // Decrease the total of generations
