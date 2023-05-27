@@ -50,7 +50,7 @@ public class App {
         System.out.println("\nDynamic algorithm:");
 
         // Get the file data0.json
-        String fileName = "data/data0.json";
+        String fileName = "data/data2.json";
         System.out.println("\nFile: " + fileName); // Print the file name
         ParsedData parsedData = LoadJson.fromFile(fileName); // Load the data from the file
         // Create a matrix with the data 

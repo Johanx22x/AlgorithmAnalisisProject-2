@@ -1,7 +1,7 @@
 {
   "professors": [
     {
-      "name": "Shawn Koenig",
+      "name": "professor0",
       "grades": [
         3,
         9,
@@ -26,7 +26,7 @@
       ]
     },
     {
-      "name": "Craig Tackitt",
+      "name": "professor1",
       "grades": [
         1,
         10,
@@ -51,7 +51,7 @@
       ]
     },
     {
-      "name": "Marie Barrientos",
+      "name": "professor2",
       "grades": [
         -1,
         2,
@@ -76,7 +76,7 @@
       ]
     },
     {
-      "name": "Rose Polanco",
+      "name": "professor3",
       "grades": [
         0,
         5,
@@ -101,7 +101,7 @@
       ]
     },
     {
-      "name": "Karen Martorello",
+      "name": "professor4",
       "grades": [
         3,
         5,
@@ -126,7 +126,7 @@
       ]
     },
     {
-      "name": "Kristie Ramires",
+      "name": "professor5",
       "grades": [
         4,
         8,
@@ -151,7 +151,7 @@
       ]
     },
     {
-      "name": "Gerardo Davis",
+      "name": "professor6",
       "grades": [
         5,
         -1,
@@ -176,7 +176,7 @@
       ]
     },
     {
-      "name": "Carla Navarrete",
+      "name": "professor7",
       "grades": [
         6,
         1,
@@ -201,7 +201,7 @@
       ]
     },
     {
-      "name": "Wallace Kaczmarek",
+      "name": "professor8",
       "grades": [
         3,
         7,
@@ -226,7 +226,7 @@
       ]
     },
     {
-      "name": "Jeffrey Anderson",
+      "name": "professor9",
       "grades": [
         4,
         7,

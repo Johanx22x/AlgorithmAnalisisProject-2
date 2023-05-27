@@ -1,7 +1,7 @@
 {
   "professors": [
     {
-      "name": "Ingrid Hammock",
+      "name": "professor0",
       "grades": [
         6,
         6,
@@ -33,7 +33,7 @@
       ]
     },
     {
-      "name": "David Vang",
+      "name": "professor1",
       "grades": [
         8,
         9,
@@ -65,7 +65,7 @@
       ]
     },
     {
-      "name": "Charles Liedke",
+      "name": "professor2",
       "grades": [
         5,
         7,
@@ -97,7 +97,7 @@
       ]
     },
     {
-      "name": "Tanya Sanchez",
+      "name": "professor3",
       "grades": [
         8,
         7,
@@ -129,7 +129,7 @@
       ]
     },
     {
-      "name": "Justin Perez",
+      "name": "professor4",
       "grades": [
         2,
         9,
@@ -161,7 +161,7 @@
       ]
     },
     {
-      "name": "Marlene Lee",
+      "name": "professor5",
       "grades": [
         7,
         6,
@@ -193,7 +193,7 @@
       ]
     },
     {
-      "name": "Phyllis Harris",
+      "name": "professor6",
       "grades": [
         1,
         4,
@@ -225,7 +225,7 @@
       ]
     },
     {
-      "name": "Karen Shoup",
+      "name": "professor7",
       "grades": [
         6,
         10,
@@ -257,7 +257,7 @@
       ]
     },
     {
-      "name": "Mandy Gutierrez",
+      "name": "professor8",
       "grades": [
         6,
         8,

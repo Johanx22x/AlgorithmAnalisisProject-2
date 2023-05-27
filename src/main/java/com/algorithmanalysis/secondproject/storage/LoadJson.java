@@ -41,7 +41,7 @@ public class LoadJson {
 
             for (int j = 0; j < grades.size(); j++) {
                 Professor prof = new Professor(name);
-                Course cour = new Course("Course" + j);
+                Course cour = new Course("Course " + j);
                 int grade = ((Long) grades.get(j)).intValue();
                 Allele all = new Allele(prof, cour, grade);
                 result.alleles.add(all);

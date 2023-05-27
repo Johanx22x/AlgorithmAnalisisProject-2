@@ -1,7 +1,7 @@
 {
   "professors": [
     {
-      "name": "Bette Molitor",
+      "name": "professor0",
       "grades": [
         2,
         5,
@@ -24,7 +24,7 @@
       ]
     },
     {
-      "name": "Ileana Parker",
+      "name": "professor1",
       "grades": [
         7,
         9,
@@ -47,7 +47,7 @@
       ]
     },
     {
-      "name": "Michael Eubanks",
+      "name": "professor2",
       "grades": [
         1,
         6,
@@ -70,7 +70,7 @@
       ]
     },
     {
-      "name": "Gregg Putman",
+      "name": "professor3",
       "grades": [
         1,
         6,
@@ -93,7 +93,7 @@
       ]
     },
     {
-      "name": "Gail Scott",
+      "name": "professor4",
       "grades": [
         8,
         5,
@@ -116,7 +116,7 @@
       ]
     },
     {
-      "name": "Frank Mcneil",
+      "name": "professor5",
       "grades": [
         9,
         5,

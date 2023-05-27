@@ -1,7 +1,7 @@
 {
   "professors": [
     {
-      "name": "Chang Miller",
+      "name": "professor0",
       "grades": [
         2,
         0,
@@ -36,7 +36,7 @@
       ]
     },
     {
-      "name": "Esther Sotello",
+      "name": "professor1",
       "grades": [
         0,
         10,
@@ -71,7 +71,7 @@
       ]
     },
     {
-      "name": "Jennifer Clark",
+      "name": "professor2",
       "grades": [
         7,
         5,
@@ -106,7 +106,7 @@
       ]
     },
     {
-      "name": "Ronald Thompson",
+      "name": "professor3",
       "grades": [
         9,
         9,
@@ -141,7 +141,7 @@
       ]
     },
     {
-      "name": "William Mckinney",
+      "name": "professor4",
       "grades": [
         2,
         4,
@@ -176,7 +176,7 @@
       ]
     },
     {
-      "name": "Sau Stroman",
+      "name": "professor5",
       "grades": [
         0,
         8,
@@ -211,7 +211,7 @@
       ]
     },
     {
-      "name": "Norma Stewart",
+      "name": "professor6",
       "grades": [
         6,
         5,
@@ -246,7 +246,7 @@
       ]
     },
     {
-      "name": "Jeffry Barker",
+      "name": "professor7",
       "grades": [
         -1,
         7,
@@ -281,7 +281,7 @@
       ]
     },
     {
-      "name": "Glenn Scott",
+      "name": "professor8",
       "grades": [
         5,
         6,
@@ -316,7 +316,7 @@
       ]
     },
     {
-      "name": "Carrie Redman",
+      "name": "professor9",
       "grades": [
         3,
         0,

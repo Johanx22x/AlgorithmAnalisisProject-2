@@ -20,8 +20,8 @@ public class Course {
      */
     public Course(String name) {
         this.name = name;
-        // The index is the last character of the name 
-        this.index = Integer.parseInt(name.substring(name.length() - 1));
+        // The index is the number after " " last space, could be a two digit number
+        this.index = Integer.parseInt(name.substring(name.lastIndexOf(" ") + 1));
     }
 
     /**
