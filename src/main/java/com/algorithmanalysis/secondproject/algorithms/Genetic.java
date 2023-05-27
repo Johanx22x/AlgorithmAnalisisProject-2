@@ -148,8 +148,8 @@ public class Genetic {
                 if (maxAttempts == 0) {
                     return null; // Abort the crossover
                 }
-                i = -1;
-                alleles.clear();
+                alleles.clear(); // Clear the alleles array 
+                i = -1; // Reset the index
                 maxAttempts--;
             }
         }

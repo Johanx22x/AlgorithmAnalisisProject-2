@@ -1,7 +1,7 @@
 {
   "professors": [
     {
-      "name": "Jo Bailey",
+      "name": "professor0",
       "grades": [
         10,
         -1,
@@ -15,7 +15,7 @@
       ]
     },
     {
-      "name": "Joseph Thomason",
+      "name": "professor1",
       "grades": [
         9,
         10,
@@ -29,7 +29,7 @@
       ]
     },
     {
-      "name": "Richard Shea",
+      "name": "professor2",
       "grades": [
         10,
         7,

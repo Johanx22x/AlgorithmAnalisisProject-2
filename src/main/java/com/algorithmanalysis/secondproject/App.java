@@ -3,17 +3,16 @@ package com.algorithmanalysis.secondproject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.json.simple.parser.ParseException;
 
 import com.algorithmanalysis.secondproject.algorithms.Backtracking;
+import com.algorithmanalysis.secondproject.algorithms.Dynamic;
 import com.algorithmanalysis.secondproject.models.Allele;
 import com.algorithmanalysis.secondproject.models.Chromosome;
 import com.algorithmanalysis.secondproject.storage.LoadJson;
@@ -29,6 +28,8 @@ import com.algorithmanalysis.secondproject.utils.ErrorCodes;
  * Purpose: Main class for the project
  */
 public class App {
+    static boolean verbose = false;
+
     public static void main(String[] args) throws IOException, ParseException {
         ArrayList<String> files = getFiles();
 
@@ -63,6 +64,17 @@ public class App {
         } else {
             System.out.println("No solution found");
         }
+
+
+        // Dynamic algorithm
+        System.out.println("\nDynamic algorithm:");
+
+        // Get the file data0.json
+        String fileName = "data/data0.json";
+        System.out.println("\nFile: " + fileName); // Print the file name
+        ParsedData parsedData = LoadJson.fromFile(fileName); // Load the data from the file
+        // Create a matrix with the data 
+        Dynamic.runDynamicAlgorithm(parsedData.alleles, parsedData.courses, parsedData.alleles.size()/parsedData.courses); // Run the genetic algorithm
 
         // Genetic algorithm
         System.out.println("\nGenetic algorithm:");
@@ -133,7 +145,6 @@ public class App {
                     if (i == j) {
                         continue;
                     }
-
                     // Selection
                     Chromosome parent1 = genetic.selection(i);
                     Chromosome parent2 = genetic.selection(j);

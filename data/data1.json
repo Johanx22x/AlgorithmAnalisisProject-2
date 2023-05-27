@@ -1,7 +1,7 @@
 {
   "professors": [
     {
-      "name": "Dustin Campbell",
+      "name": "professor0",
       "grades": [
         7,
         9,
@@ -21,7 +21,7 @@
       ]
     },
     {
-      "name": "Tesha Smith",
+      "name": "professor1",
       "grades": [
         6,
         10,
@@ -41,7 +41,7 @@
       ]
     },
     {
-      "name": "Rodolfo Powell",
+      "name": "professor2",
       "grades": [
         8,
         2,
@@ -61,7 +61,7 @@
       ]
     },
     {
-      "name": "Joseph Mason",
+      "name": "professor3",
       "grades": [
         -1,
         -1,
@@ -81,7 +81,7 @@
       ]
     },
     {
-      "name": "Cristina Withem",
+      "name": "professor4",
       "grades": [
         8,
         9,

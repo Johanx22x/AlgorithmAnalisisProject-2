@@ -9,6 +9,7 @@ package com.algorithmanalysis.secondproject.models;
  */
 public class Professor {
     private String name; // The name of the professor
+    private int index; // The index of the professor in the array
 
     /**
      * Constructor
@@ -17,6 +18,8 @@ public class Professor {
      */
     public Professor(String name) {
         this.name = name;
+        // Get the index of the professor
+        this.index = Integer.parseInt(name.substring(name.length() - 1));
     }
 
     /**
@@ -35,6 +38,15 @@ public class Professor {
      */
     public void setName(String newName) {
         this.name = newName;
+    }
+
+    /**
+     * Get the index of the professor
+     *
+     * @return The index of the professor
+     */
+    public int getIndex() {
+        return index;
     }
 
     /**
