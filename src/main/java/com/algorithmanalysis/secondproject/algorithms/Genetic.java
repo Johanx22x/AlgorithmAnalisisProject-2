@@ -54,7 +54,7 @@ public class Genetic {
             }
         }
 
-        totalOfGenerations = chromosomes.size() * 2; // Set the total of generations
+        totalOfGenerations = chromosomes.size() * 1000; // Set the total of generations
 
         return ErrorCodes.NO_ERROR; // Return no error
     }
@@ -205,6 +205,15 @@ public class Genetic {
     }
 
     /**
+     * Get chromosomes 
+     *
+     * @return ArrayList<Chromosome> chromosomes
+     */
+    public ArrayList<Chromosome> getChromosomes() {
+        return chromosomes;
+    }
+
+    /**
      * Get chromosome at index 
      *
      * @param int index 
@@ -224,6 +233,15 @@ public class Genetic {
     }
 
     /**
+     * Get population size 
+     *
+     * @return int populationSize
+     */
+    public int getPopulationSize() {
+        return populationSize;
+    }
+
+    /**
      * Get result
      *
      * @return {@link Chromosome} result
@@ -233,12 +251,30 @@ public class Genetic {
     }
 
     /**
+     * Set result 
+     *
+     * @param {@link Chromosome} result
+     */
+    public void setResult(Chromosome result) {
+        this.result = result;
+    }
+
+    /**
      * Get total of generations 
      *
      * @return int totalOfGenerations
      */
     public int getTotalOfGenerations() {
         return totalOfGenerations;
+    }
+
+    /**
+     * Get fitness
+     *
+     * @return int fitness
+     */
+    public int getFitness() {
+        return this.result.fitness();
     }
 
     /**

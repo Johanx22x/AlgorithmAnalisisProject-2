@@ -48,8 +48,7 @@ public class Backtracking {
 
         for (int i = start; i <= elements.size() - combinationSize; i++) {
             Allele element = elements.get(i);
-            if (!currentCombination.contains(element)
-                    && isUniqueGradeCombination(currentCombination, element)) {
+            if (!currentCombination.contains(element)) {
                 currentCombination.add(element);
                 generateCombinations(elements, combinationSize - 1, currentCombination, combinations, i + 1);
                 currentCombination.remove(currentCombination.size() - 1);

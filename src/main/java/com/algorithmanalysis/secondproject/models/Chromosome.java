@@ -1,6 +1,7 @@
 package com.algorithmanalysis.secondproject.models;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import com.algorithmanalysis.secondproject.utils.ErrorCodes;
@@ -28,6 +29,15 @@ public class Chromosome {
     }
 
     /**
+     * Constructor for List 
+     *
+     * @param List<Allele> alleles Alleles of the chromosome
+     */
+    public Chromosome(List<Allele> alleles) {
+        this.alleles = new ArrayList<>(alleles);
+    }
+
+    /**
      * Generate a random chromosome
      *
      * Requirements:
@@ -37,9 +47,9 @@ public class Chromosome {
      * - A professor can be left without courses
      * - A professor with a grade of -1 means that he can't teach that course
      *
-     * @param totalOfProfessors Total of professors 
-     * @param totalOfCourses Total of courses
-     * @return ErrorCodes enum
+     * @param   totalOfProfessors   Total of professors 
+     * @param   totalOfCourses      Total of courses
+     * @return  ErrorCodes          enum
      */
     public ErrorCodes generateRandom(int totalOfProfessors, int totalOfCourses) { 
         ArrayList<Allele> newAlleles = new ArrayList<>(); // The new random generated alleles
@@ -208,6 +218,15 @@ public class Chromosome {
      */
     public ArrayList<Allele> getAlleles() {
         return alleles;
+    }
+
+    /**
+     * Set Alleles
+     *
+     * @param alleles Alleles
+     */
+    public void setAlleles(ArrayList<Allele> alleles) {
+        this.alleles = alleles;
     }
 
     /**
