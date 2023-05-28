@@ -10,6 +10,7 @@ import com.algorithmanalysis.secondproject.models.Chromosome;
 import com.algorithmanalysis.secondproject.storage.LoadJson;
 import com.algorithmanalysis.secondproject.storage.LoadJson.ParsedData;
 import com.algorithmanalysis.secondproject.utils.ErrorCodes;
+import com.algorithmanalysis.secondproject.utils.Measurement;
 import com.algorithmanalysis.secondproject.utils.ReturnOption;
 
 /**

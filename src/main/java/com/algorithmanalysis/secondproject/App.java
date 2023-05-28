@@ -17,6 +17,7 @@ import com.algorithmanalysis.secondproject.models.Chromosome;
 import com.algorithmanalysis.secondproject.storage.LoadJson;
 import com.algorithmanalysis.secondproject.storage.LoadJson.ParsedData;
 import com.algorithmanalysis.secondproject.utils.ErrorCodes;
+import com.algorithmanalysis.secondproject.utils.Measurement;
 
 /**
  * Project: Algorithm Analysis Project 2
@@ -37,17 +38,24 @@ public class App {
         System.out.println("\nGenetic algorithm:");
 
         for (String file : files) {
+            Measurement.reset(); // Reset the measurements
+                                 
             Chromosome bestResult = null; // The overall best result
             System.out.println("\nFile: " + file); // Print the file name
 
             int count = 0;
             while (count < 5) { // Try 5 times to get the best result
                 Genetic genetic = new Genetic(); // Create a new genetic object
+                Measurement.incrementAssignments(1); // Increment the assignments by 1 for the genetic object
+                                                     
                 ErrorCodes error = Genetic.runGenetic(genetic, file); // Run the genetic algorithm
+                Measurement.incrementAssignments(1); // Increment the assignments by 1 for the error code
 
+                Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
                 if (error == ErrorCodes.NO_ERROR) { // If there is no error
                     System.out.print("\tTry " + (int) (count + 1) + ":"); // Print the try number
 
+                    Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
                     if (genetic.getResult() == null) { // If there is no result
                         printError(ErrorCodes.ERROR_INCAPABLE); // Print the error
                         continue;
@@ -55,26 +63,34 @@ public class App {
 
                     System.out.println("\tThe fitness is: " + genetic.getFitness()); // Print the fitness
 
+                    Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
                     if (bestResult == null || genetic.getFitness() > bestResult.fitness()) { // If the fitness is better
                                                                                              // than the best result
                         bestResult = genetic.getResult(); // Set the best result
+                        Measurement.incrementAssignments(1); // Increment the assignments by 1 for the best result
                     }
                 } else { // If there is an error
                     printError(error); // Print the error
                 }
 
                 count++; // Increase the try number
+                Measurement.incrementAssignments(1); // Increment the assignments by 1 for the try number
             }
 
             // Print the best result
             System.out.println("\nThe best result is: " + bestResult);
             System.out.println("\n\tThe best fitness is: " + bestResult.fitness()); // Print the best fitness
+
+            // Print the measurements
+            System.out.println("\n" + Measurement.getMeasurement());
+            System.out.println();
         }
 
 
         // Dynamic algorithm
         System.out.println("\nDynamic algorithm:");
         for (String file : files) {
+            Measurement.reset(); // Reset the measurements
             System.out.println("\nFile: " + file); // Print the file name
 
             // Load the data from the file
@@ -82,12 +98,17 @@ public class App {
 
             // Create a matrix with the data 
             Dynamic.runDynamicAlgorithm(parsedData.alleles, parsedData.courses, parsedData.alleles.size()/parsedData.courses); // Run the genetic algorithm
+
+            // Print the measurements
+            System.out.println("\n" + Measurement.getMeasurement());
+            System.out.println();
         }
 
 
         // Backtracking algorithm
         System.out.println("\nBacktracking algorithm");
         for (String file : files) {
+            Measurement.reset(); // Reset the measurements
             System.out.println("\nFile: " + file); // Print the file name
                                                    
             ParsedData data = LoadJson.fromFile(file);
@@ -105,6 +126,10 @@ public class App {
             } else {
                 System.out.println("No solution found");
             }
+
+            // Print the measurements
+            System.out.println("\n" + Measurement.getMeasurement());
+            System.out.println();
         }
     }
 
