@@ -23,38 +23,15 @@ import com.algorithmanalysis.secondproject.utils.ErrorCodes;
  * File Name: App.java
  *
  * Purpose: Main class for the project
+ *
+ * @version 2.1
  */
 public class App {
     static boolean verbose = false;
 
     public static void main(String[] args) throws IOException, ParseException {
-        ParsedData data = LoadJson.fromFile("data/data0.json");
-        Optional<List<Allele>> filteredData = Backtracking.getCombinations(data.alleles,
-                data.courses).stream()
-                .sorted(Comparator.comparingInt(combination -> -combination.stream().mapToInt(Allele::getGrade).sum()))
-                .findFirst();
-
-        System.out.println(filteredData);
+        // Get the files names
         ArrayList<String> files = getFiles();
-
-        if (filteredData.isPresent()) {
-            Chromosome chromosome = new Chromosome(filteredData.get());
-            System.out.println(chromosome);
-            System.out.println(chromosome.fitness());
-        } else {
-            System.out.println("No solution found");
-        }
-
-
-        // Dynamic algorithm
-        System.out.println("\nDynamic algorithm:");
-
-        // Get the file data0.json
-        String fileName = "data/data2.json";
-        System.out.println("\nFile: " + fileName); // Print the file name
-        ParsedData parsedData = LoadJson.fromFile(fileName); // Load the data from the file
-        // Create a matrix with the data 
-        Dynamic.runDynamicAlgorithm(parsedData.alleles, parsedData.courses, parsedData.alleles.size()/parsedData.courses); // Run the genetic algorithm
 
         // Genetic algorithm
         System.out.println("\nGenetic algorithm:");
@@ -66,7 +43,7 @@ public class App {
             int count = 0;
             while (count < 5) { // Try 5 times to get the best result
                 Genetic genetic = new Genetic(); // Create a new genetic object
-                ErrorCodes error = runGenetic(genetic, file); // Run the genetic algorithm
+                ErrorCodes error = Genetic.runGenetic(genetic, file); // Run the genetic algorithm
 
                 if (error == ErrorCodes.NO_ERROR) { // If there is no error
                     System.out.print("\tTry " + (int) (count + 1) + ":"); // Print the try number
@@ -93,93 +70,42 @@ public class App {
             System.out.println("\nThe best result is: " + bestResult);
             System.out.println("\n\tThe best fitness is: " + bestResult.fitness()); // Print the best fitness
         }
-    }
 
-    /**
-     * Run the genetic algorithm
-     *
-     * @param genetic  The genetic object
-     * @param fileName The file name
-     * @return The error code
-     */
-    private static ErrorCodes runGenetic(Genetic genetic, String fileName) throws IOException, ParseException {
-        ParsedData parsedData = LoadJson.fromFile(fileName); // Load the data from the file
 
-        genetic.setPopulation(parsedData.alleles); // Set the population
-        genetic.setPopulationSize(parsedData.population); // Set the population size
-        genetic.setTotalOfProfessors(parsedData.alleles.size() / parsedData.courses); // Set the total of professors
-        genetic.setTotalOfCourses(parsedData.courses); // Set the total of courses
+        // Dynamic algorithm
+        System.out.println("\nDynamic algorithm:");
+        for (String file : files) {
+            System.out.println("\nFile: " + file); // Print the file name
 
-        // Check if the chromosomes were created successfully
-        ErrorCodes error = genetic.createChromosomes();
-        if (error != ErrorCodes.NO_ERROR) {
-            return error;
+            // Load the data from the file
+            ParsedData parsedData = LoadJson.fromFile(file); 
+
+            // Create a matrix with the data 
+            Dynamic.runDynamicAlgorithm(parsedData.alleles, parsedData.courses, parsedData.alleles.size()/parsedData.courses); // Run the genetic algorithm
         }
 
-        int totalOfGenerations = genetic.getTotalOfGenerations(); // Get the total of generations
 
-        // Start the genetic algorithm
-        while (totalOfGenerations > 0) {
-            // Iterate over the chromosomes to select, crossover, mutate and evaluate the
-            // fitness
-            for (int i = 0; i < genetic.getChromosomes().size(); i++) {
-                for (int j = 0; j < genetic.getChromosomes().size(); j++) {
-                    if (i == j) {
-                        continue;
-                    }
-                    // Selection
-                    Chromosome parent1 = genetic.selection(i);
-                    Chromosome parent2 = genetic.selection(j);
+        // Backtracking algorithm
+        System.out.println("\nBacktracking algorithm");
+        for (String file : files) {
+            System.out.println("\nFile: " + file); // Print the file name
+                                                   
+            ParsedData data = LoadJson.fromFile(file);
+            Optional<List<Allele>> filteredData = Backtracking.getCombinations(data.alleles,
+                    data.courses).stream()
+                    .sorted(Comparator.comparingInt(combination -> -combination.stream().mapToInt(Allele::getGrade).sum()))
+                    .findFirst();
 
-                    // Crossover
-                    Chromosome offspring = genetic.crossover(parent1, parent2);
+            System.out.println(filteredData);
 
-                    if (offspring == null) {
-                        totalOfGenerations--;
-                        continue;
-                    }
-
-                    // Mutation
-                    Chromosome offspringMutated = genetic.mutation(offspring);
-
-                    if (offspringMutated.fitness() > offspring.fitness()) {
-                        offspring = offspringMutated;
-                    }
-
-                    // Evaluate fitness
-                    int offspringFitness = offspring.fitness(); // Or use a custom fitness evaluation method
-
-                    // Update population
-                    int leastFitIndex = 0;
-                    int leastFitFitness = Integer.MAX_VALUE;
-
-                    for (int k = 0; k < genetic.getChromosomes().size(); k++) {
-                        Chromosome chromosome = genetic.getChromosome(k);
-                        int chromosomeFitness = chromosome.fitness(); // Or use a custom fitness evaluation method
-
-                        if (chromosomeFitness < leastFitFitness) {
-                            leastFitFitness = chromosomeFitness;
-                            leastFitIndex = k;
-                        }
-                    }
-
-                    if (offspringFitness > leastFitFitness) {
-                        genetic.getChromosome(leastFitIndex).setAlleles(offspring.getAlleles());
-                    }
-                }
-            }
-
-            totalOfGenerations--; // Decrease the total of generations
-        }
-
-        genetic.setResult(genetic.getChromosome(0));
-        for (int i = 1; i < genetic.getChromosomes().size(); i++) {
-            if (genetic.getChromosome(i).fitness() > genetic.getChromosome(i - 1).fitness()) {
-                genetic.setResult(genetic.getChromosome(i));
+            if (filteredData.isPresent()) {
+                Chromosome chromosome = new Chromosome(filteredData.get());
+                System.out.println(chromosome);
+                System.out.println(chromosome.fitness());
+            } else {
+                System.out.println("No solution found");
             }
         }
-
-        return ErrorCodes.NO_ERROR;
     }
 
     /**

@@ -1,9 +1,14 @@
 package com.algorithmanalysis.secondproject.algorithms;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import org.json.simple.parser.ParseException;
 
 import com.algorithmanalysis.secondproject.models.Allele;
 import com.algorithmanalysis.secondproject.models.Chromosome;
+import com.algorithmanalysis.secondproject.storage.LoadJson;
+import com.algorithmanalysis.secondproject.storage.LoadJson.ParsedData;
 import com.algorithmanalysis.secondproject.utils.ErrorCodes;
 import com.algorithmanalysis.secondproject.utils.ReturnOption;
 
@@ -29,6 +34,95 @@ public class Genetic {
 
     // Result
     private Chromosome result = null; // Result
+                                      
+
+    /**
+     * Run the genetic algorithm
+     *
+     * @param genetic  The genetic object
+     * @param fileName The file name
+     * @return The error code
+     */
+    public static ErrorCodes runGenetic(Genetic genetic, String fileName) throws IOException, ParseException {
+        ParsedData parsedData = LoadJson.fromFile(fileName); // Load the data from the file
+
+        genetic.setPopulation(parsedData.alleles); // Set the population
+        genetic.setPopulationSize(parsedData.population); // Set the population size
+        genetic.setTotalOfProfessors(parsedData.alleles.size() / parsedData.courses); // Set the total of professors
+        genetic.setTotalOfCourses(parsedData.courses); // Set the total of courses
+
+        // Check if the chromosomes were created successfully
+        ErrorCodes error = genetic.createChromosomes();
+        if (error != ErrorCodes.NO_ERROR) {
+            return error;
+        }
+
+        int totalOfGenerations = genetic.getTotalOfGenerations(); // Get the total of generations
+
+        // Start the genetic algorithm
+        while (totalOfGenerations > 0) {
+            // Iterate over the chromosomes to select, crossover, mutate and evaluate the
+            // fitness
+            for (int i = 0; i < genetic.getChromosomes().size(); i++) {
+                for (int j = 0; j < genetic.getChromosomes().size(); j++) {
+                    if (i == j) {
+                        continue;
+                    }
+                    // Selection
+                    Chromosome parent1 = genetic.selection(i);
+                    Chromosome parent2 = genetic.selection(j);
+
+                    // Crossover
+                    Chromosome offspring = genetic.crossover(parent1, parent2);
+
+                    if (offspring == null) {
+                        totalOfGenerations--;
+                        continue;
+                    }
+
+                    // Mutation
+                    Chromosome offspringMutated = genetic.mutation(offspring);
+
+                    if (offspringMutated.fitness() > offspring.fitness()) {
+                        offspring = offspringMutated;
+                    }
+
+                    // Evaluate fitness
+                    int offspringFitness = offspring.fitness(); // Or use a custom fitness evaluation method
+
+                    // Update population
+                    int leastFitIndex = 0;
+                    int leastFitFitness = Integer.MAX_VALUE;
+
+                    for (int k = 0; k < genetic.getChromosomes().size(); k++) {
+                        Chromosome chromosome = genetic.getChromosome(k);
+                        int chromosomeFitness = chromosome.fitness(); // Or use a custom fitness evaluation method
+
+                        if (chromosomeFitness < leastFitFitness) {
+                            leastFitFitness = chromosomeFitness;
+                            leastFitIndex = k;
+                        }
+                    }
+
+                    if (offspringFitness > leastFitFitness) {
+                        genetic.getChromosome(leastFitIndex).setAlleles(offspring.getAlleles());
+                    }
+                }
+            }
+
+            totalOfGenerations--; // Decrease the total of generations
+        }
+
+        genetic.setResult(genetic.getChromosome(0));
+        for (int i = 1; i < genetic.getChromosomes().size(); i++) {
+            if (genetic.getChromosome(i).fitness() > genetic.getChromosome(i - 1).fitness()) {
+                genetic.setResult(genetic.getChromosome(i));
+            }
+        }
+
+        return ErrorCodes.NO_ERROR;
+    }
+
                             
     /**
      * Create chromosomes

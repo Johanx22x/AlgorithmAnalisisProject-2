@@ -24,6 +24,11 @@ public class Dynamic {
         // Get the best combination
         int[] bestCombination = getBestCombination(matrix);
 
+        if (!isValidCombination(bestCombination, matrix)) {
+            System.out.println("\n\tCan't find a valid combination!");
+            return;
+        }
+
         // Print the best combination
         System.out.println("\nBest combination: ");
         int fitness = getFitness(bestCombination, matrix);
@@ -107,6 +112,36 @@ public class Dynamic {
             fitness += grade; // Increment the fitness
         }
         return fitness; // Return the fitness
+    }
+
+    /**
+     * Check is valid combination
+     *
+     * @param combination
+     * @return {@link boolean}
+     */
+    private static boolean isValidCombination(int[] combination, int[][] matrix) {
+        // Check if there is a grade with -1
+        for (int i = 0; i < combination.length; i++) {
+            if (combination[i] == -1) {
+                return false;
+            }
+        }
+
+        // Check if there is a professor with more than 4 courses
+        int[] professors = new int[matrix[0].length];
+        for (int i = 0; i < combination.length; i++) {
+            int professorIndex = combination[i];
+            professors[professorIndex]++;
+        }
+
+        for (int i = 0; i < professors.length; i++) {
+            if (professors[i] > 4) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
 
