@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.algorithmanalysis.secondproject.models.Allele;
+import com.algorithmanalysis.secondproject.utils.Measurement;
 
 /**
  * Backtracking algorithm
@@ -24,6 +25,7 @@ public class Backtracking {
      * @return List containing all possible combinations
      */
     public static List<List<Allele>> getCombinations(List<Allele> elements, int combinationSize) {
+        Measurement.incrementAssignments(1);
         List<List<Allele>> combinations = new ArrayList<>();
         System.out.println("Generating combinations");
         generateCombinations(elements, combinationSize, new ArrayList<>(), combinations, 0);
@@ -44,12 +46,16 @@ public class Backtracking {
     private static void generateCombinations(List<Allele> elements, int combinationSize,
             List<Allele> currentCombination,
             List<List<Allele>> combinations, int start) {
+        Measurement.incrementComparisons(1);
         if (combinationSize == 0) {
             combinations.add(new ArrayList<>(currentCombination));
             return;
         }
 
+        Measurement.incrementAssignments(1);
         for (int i = start; i <= elements.size() - combinationSize; i++) {
+            Measurement.incrementComparisons(3);
+            Measurement.incrementAssignments(2);
             Allele element = elements.get(i);
             if (!currentCombination.contains(element)
                     && isValidCombination(currentCombination, element)) {
@@ -70,6 +76,9 @@ public class Backtracking {
      * @return Whether or not the combination was valid
      */
     private static boolean isValidCombination(List<Allele> currentCombination, Allele allele) {
+
+        Measurement.incrementComparisons(currentCombination.size() * 2);
+
         return currentCombination.stream().map(Allele::getCourse)
                 .noneMatch(course -> course.getName().equals(allele.getCourse().getName()))
                 && currentCombination.stream().map(Allele::getProfessor)

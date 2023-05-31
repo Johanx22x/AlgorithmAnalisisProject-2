@@ -1,0 +1,71 @@
+@startuml Backtracking
+start
+
+partition **function** getCombinations {
+    :List<Allele> element\nint combinationSize;
+    :combinations = new ArrayList<>();
+    :generateCombinations(elements, combinationSize, new ArrayList<>(), combinations, 0);
+    (C)
+    detach
+}
+
+partition **function** generateCombinations {
+    (C)
+    :List<Allele> elements
+    int combinationSize
+    List<Allele> currentCombination
+    List<List<Allele>> combinations
+    int start;
+
+    if (combinationSize) is (0) then
+        :combinations.add(new ArrayList<>(currentCombination));
+        stop
+    endif
+
+    :i = 0;
+    while (i) is (not elements.size())
+        :Allele element = elements.get(i);
+        if (!currentCombination.contains(element)\nand isValidCombination(currentCombination, element)) then (yes)
+            :currentCombination.add(element);
+            :generateCombinations(elements, combinationSize - 1, currentCombination, combinations, i + 1);
+            (R)
+
+            partition **function** generateCombinations {
+                :Recurse;
+            }
+
+            detach
+
+            (R)
+            :currentCombination.remove(currentCombination.size() - 1);
+        endif
+        :i++;
+    endwhile
+}
+
+partition **function** getCombinations {
+    :return combinations;
+    end
+}
+
+partition **function** isValidCombination {
+    :List<Allele> currentCombination
+    Allele allele;
+    
+    :int i = 0;
+    
+    while (i) is (not currentCombination.size())
+        :Course c = currentCombination.get(i).getCourse();
+
+        if (c.getName().equals(allele.getCourse().getName()\nand professorNotRepeatedMoreThan4Times()) then (yes)
+            :return false;
+            stop
+        endif
+        :i++;
+    endwhile
+
+    :return true;
+    stop
+}
+
+@enduml

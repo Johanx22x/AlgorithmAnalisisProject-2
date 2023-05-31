@@ -19,6 +19,9 @@ import com.algorithmanalysis.secondproject.storage.LoadJson.ParsedData;
 import com.algorithmanalysis.secondproject.utils.ErrorCodes;
 import com.algorithmanalysis.secondproject.utils.Measurement;
 
+import guru.nidi.graphviz.engine.Format;
+import moe.leer.codeflowcore.CodeFlow;
+
 /**
  * Project: Algorithm Analysis Project 2
  * File Name: App.java
@@ -42,7 +45,6 @@ public class App {
                                  
         //     Chromosome bestResult = null; // The overall best result
         //     System.out.println("\nFile: " + file); // Print the file name
-
         //     int count = 0;
         //     Measurement.incrementAssignments(1); // Increment the assignments by 1 for the try number
         //     while (count < 5) { // Try 5 times to get the best result
@@ -91,7 +93,6 @@ public class App {
         //     System.out.println();
         // }
 
-
         // Dynamic algorithm
         System.out.println("\nDynamic algorithm:");
         for (String file : files) {
@@ -99,16 +100,16 @@ public class App {
             System.out.println("\nFile: " + file); // Print the file name
 
             // Load the data from the file
-            ParsedData parsedData = LoadJson.fromFile(file); 
+            ParsedData parsedData = LoadJson.fromFile(file);
 
-            // Create a matrix with the data 
-            Dynamic.runDynamicAlgorithm(parsedData.alleles, parsedData.courses, parsedData.alleles.size()/parsedData.courses); // Run the genetic algorithm
+            // Create a matrix with the data
+            Dynamic.runDynamicAlgorithm(parsedData.alleles, parsedData.courses,
+                    parsedData.alleles.size() / parsedData.courses); // Run the genetic algorithm
 
             // Print the measurements
             System.out.println("\n" + Measurement.getMeasurement());
             System.out.println();
         }
-
 
         // Backtracking algorithm
         // System.out.println("\nBacktracking algorithm");
