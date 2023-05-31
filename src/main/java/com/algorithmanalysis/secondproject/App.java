@@ -19,6 +19,9 @@ import com.algorithmanalysis.secondproject.storage.LoadJson.ParsedData;
 import com.algorithmanalysis.secondproject.utils.ErrorCodes;
 import com.algorithmanalysis.secondproject.utils.Measurement;
 
+import guru.nidi.graphviz.engine.Format;
+import moe.leer.codeflowcore.CodeFlow;
+
 /**
  * Project: Algorithm Analysis Project 2
  * File Name: App.java
@@ -39,7 +42,7 @@ public class App {
 
         for (String file : files) {
             Measurement.reset(); // Reset the measurements
-                                 
+
             Chromosome bestResult = null; // The overall best result
             System.out.println("\nFile: " + file); // Print the file name
 
@@ -51,7 +54,7 @@ public class App {
 
                 Genetic genetic = new Genetic(); // Create a new genetic object
                 Measurement.incrementAssignments(1); // Increment the assignments by 1 for the genetic object
-                                                     
+
                 ErrorCodes error = Genetic.runGenetic(genetic, file); // Run the genetic algorithm
                 Measurement.incrementAssignments(1); // Increment the assignments by 1 for the error code
 
@@ -69,7 +72,7 @@ public class App {
 
                     Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
                     if (bestResult == null || genetic.getFitness() > bestResult.fitness()) { // If the fitness is better
-                                                                                             // than the best result
+                        // than the best result
                         bestResult = genetic.getResult(); // Set the best result
                         Measurement.incrementAssignments(1); // Increment the assignments by 1 for the best result
                     }
@@ -91,7 +94,6 @@ public class App {
             System.out.println();
         }
 
-
         // Dynamic algorithm
         System.out.println("\nDynamic algorithm:");
         for (String file : files) {
@@ -99,27 +101,28 @@ public class App {
             System.out.println("\nFile: " + file); // Print the file name
 
             // Load the data from the file
-            ParsedData parsedData = LoadJson.fromFile(file); 
+            ParsedData parsedData = LoadJson.fromFile(file);
 
-            // Create a matrix with the data 
-            Dynamic.runDynamicAlgorithm(parsedData.alleles, parsedData.courses, parsedData.alleles.size()/parsedData.courses); // Run the genetic algorithm
+            // Create a matrix with the data
+            Dynamic.runDynamicAlgorithm(parsedData.alleles, parsedData.courses,
+                    parsedData.alleles.size() / parsedData.courses); // Run the genetic algorithm
 
             // Print the measurements
             System.out.println("\n" + Measurement.getMeasurement());
             System.out.println();
         }
 
-
         // Backtracking algorithm
         System.out.println("\nBacktracking algorithm");
         for (String file : files) {
             Measurement.reset(); // Reset the measurements
             System.out.println("\nFile: " + file); // Print the file name
-                                                   
+
             ParsedData data = LoadJson.fromFile(file);
             Optional<List<Allele>> filteredData = Backtracking.getCombinations(data.alleles,
                     data.courses).stream()
-                    .sorted(Comparator.comparingInt(combination -> -combination.stream().mapToInt(Allele::getGrade).sum()))
+                    .sorted(Comparator
+                            .comparingInt(combination -> -combination.stream().mapToInt(Allele::getGrade).sum()))
                     .findFirst();
 
             System.out.println(filteredData);

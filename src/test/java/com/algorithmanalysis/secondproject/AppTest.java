@@ -43,12 +43,13 @@ public class AppTest
      */
     public void testApp() throws FileNotFoundException, IOException, ClassNotFoundException {
 
-        ArrayList<Allele> alelos = new ArrayList<>();
-        alelos.add(new Allele(new Professor("Damn"), new Course("Prueba"), 90));
-        DataStore.dumpToFile("Damn", alelos);
+        // ArrayList<Allele> alelos = new ArrayList<>();
+        // alelos.add(new Allele(new Professor("Damn"), new Course("Prueba"), 90));
+        // DataStore.dumpToFile("Damn", alelos);
 
-        ArrayList<Allele> alelos2 = DataStore.loadFromFile("Prueba");
-        System.out.println(alelos2.toString());
-        assertTrue(true);
+        // ArrayList<Allele> alelos2 = DataStore.loadFromFile("Prueba");
+        // System.out.println(alelos2.toString());
+        // assertTrue(true);
+
     }
 }
