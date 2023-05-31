@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.json.simple.parser.ParseException;
 
 import com.algorithmanalysis.secondproject.algorithms.Backtracking;
+import com.algorithmanalysis.secondproject.algorithms.Backtracking2;
 import com.algorithmanalysis.secondproject.algorithms.Dynamic;
 import com.algorithmanalysis.secondproject.algorithms.Genetic;
 import com.algorithmanalysis.secondproject.models.Allele;
@@ -31,85 +32,82 @@ import moe.leer.codeflowcore.CodeFlow;
  * @version 2.1
  */
 public class App {
-    static boolean verbose = false;
+    public static boolean verbose = false; // Verbose mode
 
     public static void main(String[] args) throws IOException, ParseException {
         // Get the files names
         ArrayList<String> files = getFiles();
 
         // Genetic algorithm
-        // System.out.println("\nGenetic algorithm:");
+        System.out.println("\nGenetic algorithm:");
 
+        for (String file : files) {
+            Measurement.reset(); // Reset the measurements
+                                 
+            Chromosome bestResult = null; // The overall best result
+            System.out.println("\nFile: " + file); // Print the file name
+            Measurement.incrementComparisons(1); // Increment the comparisons by 1 for each try
+
+            Genetic genetic = new Genetic(); // Create a new genetic object
+            Measurement.incrementAssignments(1); // Increment the assignments by 1 for the genetic object
+                                                 
+            ErrorCodes error = Genetic.runGenetic(genetic, file); // Run the genetic algorithm
+            Measurement.incrementAssignments(1); // Increment the assignments by 1 for the error code
+
+            Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
+            if (error == ErrorCodes.NO_ERROR) { // If there is no error
+
+                Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
+                if (genetic.getResult() == null) { // If there is no result
+                    printError(ErrorCodes.ERROR_INCAPABLE); // Print the error
+                    continue;
+                }
+
+                Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
+                if (bestResult == null || genetic.getFitness() > bestResult.fitness()) { // If the fitness is better
+                                                                                         // than the best result
+                    bestResult = genetic.getResult(); // Set the best result
+                    Measurement.incrementAssignments(1); // Increment the assignments by 1 for the best result
+                }
+            } else { // If there is an error
+                printError(error); // Print the error
+            }
+
+            // Print the best result
+            System.out.println("\nThe best result is: " + bestResult);
+            System.out.println("\n\tThe best fitness is: " + bestResult.fitness()); // Print the best fitness
+
+            // Print the best 5 results 
+            if (verbose) {
+                System.out.println("\n\tThe best 5 results are: ");
+                for (Chromosome chromosome : Genetic.getBestChromosomes()) {
+                    System.out.println("\t\t" + chromosome);
+                    System.out.println("\t\tFitness: " + chromosome.fitness());
+                }
+            }
+            
+            // Print the measurements
+            System.out.println("\n" + Measurement.getMeasurement());
+            System.out.println();
+        }
+        
+        // // Dynamic algorithm
+        // System.out.println("\nDynamic algorithm:");
         // for (String file : files) {
         //     Measurement.reset(); // Reset the measurements
-                                 
-        //     Chromosome bestResult = null; // The overall best result
         //     System.out.println("\nFile: " + file); // Print the file name
-        //     int count = 0;
-        //     Measurement.incrementAssignments(1); // Increment the assignments by 1 for the try number
-        //     while (count < 5) { // Try 5 times to get the best result
-        //         Measurement.reset(); // Reset the measurements
-        //         Measurement.incrementComparisons(1); // Increment the comparisons by 1 for each try
 
-        //         Genetic genetic = new Genetic(); // Create a new genetic object
-        //         Measurement.incrementAssignments(1); // Increment the assignments by 1 for the genetic object
-                                                     
-        //         ErrorCodes error = Genetic.runGenetic(genetic, file); // Run the genetic algorithm
-        //         Measurement.incrementAssignments(1); // Increment the assignments by 1 for the error code
+        //     // Load the data from the file
+        //     ParsedData parsedData = LoadJson.fromFile(file);
 
-        //         Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
-        //         if (error == ErrorCodes.NO_ERROR) { // If there is no error
-        //             System.out.print("\tTry " + (int) (count + 1) + ":"); // Print the try number
-
-        //             Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
-        //             if (genetic.getResult() == null) { // If there is no result
-        //                 printError(ErrorCodes.ERROR_INCAPABLE); // Print the error
-        //                 continue;
-        //             }
-
-        //             System.out.println("\tThe fitness is: " + genetic.getFitness()); // Print the fitness
-
-        //             Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
-        //             if (bestResult == null || genetic.getFitness() > bestResult.fitness()) { // If the fitness is better
-        //                                                                                      // than the best result
-        //                 bestResult = genetic.getResult(); // Set the best result
-        //                 Measurement.incrementAssignments(1); // Increment the assignments by 1 for the best result
-        //             }
-        //         } else { // If there is an error
-        //             printError(error); // Print the error
-        //         }
-
-        //         count++; // Increase the try number
-        //         Measurement.incrementAssignments(1); // Increment the assignments by 1 for the try number
-        //     }
-        //     Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the last false while statement
-
-        //     // Print the best result
-        //     System.out.println("\nThe best result is: " + bestResult);
-        //     System.out.println("\n\tThe best fitness is: " + bestResult.fitness()); // Print the best fitness
+        //     // Create a matrix with the data
+        //     Dynamic.runDynamicAlgorithm(parsedData.alleles, parsedData.courses,
+        //             parsedData.alleles.size() / parsedData.courses); // Run the genetic algorithm
 
         //     // Print the measurements
         //     System.out.println("\n" + Measurement.getMeasurement());
         //     System.out.println();
         // }
-
-        // Dynamic algorithm
-        System.out.println("\nDynamic algorithm:");
-        for (String file : files) {
-            Measurement.reset(); // Reset the measurements
-            System.out.println("\nFile: " + file); // Print the file name
-
-            // Load the data from the file
-            ParsedData parsedData = LoadJson.fromFile(file);
-
-            // Create a matrix with the data
-            Dynamic.runDynamicAlgorithm(parsedData.alleles, parsedData.courses,
-                    parsedData.alleles.size() / parsedData.courses); // Run the genetic algorithm
-
-            // Print the measurements
-            System.out.println("\n" + Measurement.getMeasurement());
-            System.out.println();
-        }
 
         // Backtracking algorithm
         // System.out.println("\nBacktracking algorithm");
@@ -132,6 +130,24 @@ public class App {
         //     } else {
         //         System.out.println("No solution found");
         //     }
+
+        //     // Print the measurements
+        //     System.out.println("\n" + Measurement.getMeasurement());
+        //     System.out.println();
+        // }
+        
+        // // Backtracking algorithm (second approach)
+        // System.out.println("\nBacktracking algorithm (second approach):");
+        // for (String file : files) {
+        //     Measurement.reset(); // Reset the measurements
+        //     System.out.println("\nFile: " + file); // Print the file name
+
+        //     // Load the data from the file
+        //     ParsedData parsedData = LoadJson.fromFile(file);
+
+        //     // Create a matrix with the data
+        //     Backtracking2.runBacktracking(parsedData.alleles, parsedData.courses,
+        //             parsedData.alleles.size() / parsedData.courses); // Run the genetic algorithm
 
         //     // Print the measurements
         //     System.out.println("\n" + Measurement.getMeasurement());

@@ -22,6 +22,7 @@ import com.algorithmanalysis.secondproject.utils.ReturnOption;
  * @version 1.1
  */
 public class Genetic {
+    private static ArrayList<Chromosome> bestChromosomes = new ArrayList<Chromosome>(); // Best 5 chromosomes (different from each other)
     private ArrayList<Chromosome> chromosomes = new ArrayList<Chromosome>(); // Final result
     private ArrayList<Allele> population = new ArrayList<Allele>(); // Candidates
     private int populationSize = 0; // Population size, Isn't the same as the ArrayList size, because the ArrayList size is the total of alleles
@@ -45,6 +46,7 @@ public class Genetic {
      * @return The error code
      */
     public static ErrorCodes runGenetic(Genetic genetic, String fileName) throws IOException, ParseException {
+        bestChromosomes.clear(); // Clear the best chromosomes
         ParsedData parsedData = LoadJson.fromFile(fileName); // Load the data from the file
 
         genetic.setPopulation(parsedData.alleles); // Set the population
@@ -137,6 +139,41 @@ public class Genetic {
                     Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
                     if (offspringFitness > leastFitFitness) {
                         genetic.getChromosome(leastFitIndex).setAlleles(offspring.getAlleles());
+                        Measurement.incrementAssignments(1); // Increment the assignments by 1 for the previous line
+
+                        // If there is a chromosome with the same fitness, don't add it 
+                        boolean add = true;
+                        for (Chromosome chromosome : bestChromosomes) {
+                            Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
+                            if (chromosome.fitness() == offspring.fitness()) {
+                                add = false;
+                                Measurement.incrementAssignments(1); // Increment the assignments by 1 for the previous line 
+                                break;
+                            }
+                        }
+
+                        Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
+                        if (!add) {
+                            continue;
+                        }
+
+                        Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
+                        if (bestChromosomes.size() >= 5) {
+                            bestChromosomes.remove(0);
+                            Measurement.incrementAssignments(1); // Increment the assignments by 1 for the previous line
+                        }
+
+                        // Append it ascendingly
+                        int index = 0;
+                        Measurement.incrementAssignments(1); // Increment the assignments by 1 for the previous line 
+
+                        Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next while statement
+                        while (index < bestChromosomes.size() && bestChromosomes.get(index).fitness() < offspringFitness) {
+                            index++;
+                            Measurement.incrementAssignments(1); // Increment the assignments by 1 for the previous line
+                        }
+
+                        bestChromosomes.add(index, offspring);
                         Measurement.incrementAssignments(1); // Increment the assignments by 1 for the previous line
                     }
                 }
@@ -327,6 +364,15 @@ public class Genetic {
         Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the last failed iteration
 
         return new Chromosome(alleles); // Return the new chromosome
+    }
+
+    /**
+     * Return the best 5 chromosomes 
+     *
+     * @return ArrayList<Chromosome> bestChromosomes
+     */
+    public static ArrayList<Chromosome> getBestChromosomes() {
+        return bestChromosomes;
     }
 
     /**
