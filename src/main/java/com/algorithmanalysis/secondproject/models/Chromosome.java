@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.algorithmanalysis.secondproject.utils.ErrorCodes;
+import com.algorithmanalysis.secondproject.utils.Measurement;
 import com.algorithmanalysis.secondproject.utils.ReturnOption;
 
 /**
@@ -125,12 +126,14 @@ public class Chromosome {
     public static ReturnOption isValidCourse(Allele allele, ArrayList<Allele> alleles) {
         // Check if the grade is valid, couldn't be -1
         // Requirement: A professor with a grade of -1 means that he can't teach that course
+        Measurement.incrementComparisons(1); // For the if
         if (allele.getGrade() != -1) {
             return ReturnOption.VALID; 
         }
 
         // Check if there is another allele with a valid grade among other professors 
         for (Allele otherAllele : alleles) {
+            Measurement.incrementComparisons(1); // For the if
             if (otherAllele.getCourse().getName().equals(allele.getCourse().getName()) && otherAllele.getGrade() != -1) {
                 return ReturnOption.INVALID; // There is another allele with a valid grade, so return invalid
             }
@@ -202,10 +205,12 @@ public class Chromosome {
      */
     public int fitness() {
         int fitness = 0; // Fitness of the chromosome
+        Measurement.incrementAssignments(1); // For the assignment
                          
         // Iterate through the alleles
         for (Allele allele : alleles) {
             fitness += allele.getGrade(); // Add the grade to the fitness
+            Measurement.incrementAssignments(1); // For the assignment
         }
 
         return fitness; // Return the fitness

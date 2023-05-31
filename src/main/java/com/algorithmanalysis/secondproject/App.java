@@ -44,7 +44,11 @@ public class App {
             System.out.println("\nFile: " + file); // Print the file name
 
             int count = 0;
+            Measurement.incrementAssignments(1); // Increment the assignments by 1 for the try number
             while (count < 5) { // Try 5 times to get the best result
+                Measurement.reset(); // Reset the measurements
+                Measurement.incrementComparisons(1); // Increment the comparisons by 1 for each try
+
                 Genetic genetic = new Genetic(); // Create a new genetic object
                 Measurement.incrementAssignments(1); // Increment the assignments by 1 for the genetic object
                                                      
@@ -76,6 +80,7 @@ public class App {
                 count++; // Increase the try number
                 Measurement.incrementAssignments(1); // Increment the assignments by 1 for the try number
             }
+            Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the last false while statement
 
             // Print the best result
             System.out.println("\nThe best result is: " + bestResult);
