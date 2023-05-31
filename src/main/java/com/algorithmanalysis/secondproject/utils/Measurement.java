@@ -114,7 +114,7 @@ public class Measurement {
      * @return {@link String} representation of the measurement
      */
     public static String getMeasurement() {
-        return "Measurement:\n\tSize: \t\t\t" + size + "\n\tAssignments: \t\t" + assignments + "\n\tComparisons: \t\t" + comparisons + 
-            "\n\tTotal instructions: \t" + (int)(assignments+comparisons) + "\n\tMemory usage: \t\t" + memoryUsage + " bits";
+        return "Measurement:\n\tSize: \t\t\t" + size + " alleles\n\tAssignments: \t\t" + assignments + "\n\tComparisons: \t\t" + comparisons + 
+            "\n\tTotal instructions: \t" + (int)(assignments+comparisons) + "\n\tMemory usage: \t\t" + memoryUsage + " bytes";
     }
 }

@@ -53,6 +53,8 @@ public class Genetic {
         genetic.setTotalOfCourses(parsedData.courses); // Set the total of courses
         Measurement.incrementAssignments(4); // Increment the assignments by 4 for the previous 4 lines
 
+        Measurement.setSize(parsedData.alleles.size()); // Set the size of the population
+
         // Check if the chromosomes were created successfully
         ErrorCodes error = genetic.createChromosomes();
         Measurement.incrementAssignments(1); // Increment the assignments by 1 for the previous line
