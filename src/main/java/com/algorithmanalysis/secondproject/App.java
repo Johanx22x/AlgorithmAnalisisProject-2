@@ -131,6 +131,8 @@ public class App {
 
             // Load the data from the file
             ParsedData parsedData = LoadJson.fromFile(file);
+            
+            Measurement.setSize(parsedData.alleles.size()); // Set the size of the matrix
 
             // Create a matrix with the data
             ErrorCodes error = Dynamic.runDynamicAlgorithm(parsedData.alleles, parsedData.courses,
