@@ -1,6 +1,7 @@
 package com.algorithmanalysis.secondproject;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -72,6 +73,31 @@ public class App {
             } else { // If there is an error
                 printError(error); // Print the error
             }
+
+            // Write crossoverBuffer and mutationBuffer to file fileName+"_crossoverBuffer.txt" and fileName+"_mutationBuffer.txt"
+            String crossoverBufferFile = genetic.getCrossoverBuffer();
+            String mutationBufferFile = genetic.getMutationBuffer();
+            String crossoverBufferFileName = file.substring(0, file.length() - 5) + "_crossoverBuffer.txt";
+            String mutationBufferFileName = file.substring(0, file.length() - 5) + "_mutationBuffer.txt";
+            System.out.println("\n\tWriting crossover buffer to file: " + crossoverBufferFileName);
+            System.out.println("\tWriting mutation buffer to file: " + mutationBufferFileName);
+            // If the file not exists, create it 
+            File crossoverBufferFileObject = new File(crossoverBufferFileName);
+            File mutationBufferFileObject = new File(mutationBufferFileName);
+
+            // Create files
+            crossoverBufferFileObject.createNewFile();
+            mutationBufferFileObject.createNewFile();
+
+            // Write the crossover buffer to the file
+            FileWriter crossoverBufferFileWriter = new FileWriter(crossoverBufferFileObject);
+            crossoverBufferFileWriter.write(crossoverBufferFile);
+            crossoverBufferFileWriter.close();
+
+            // Write the mutation buffer to the file 
+            FileWriter mutationBufferFileWriter = new FileWriter(mutationBufferFileObject);
+            mutationBufferFileWriter.write(mutationBufferFile);
+            mutationBufferFileWriter.close();
 
             // Print the best result
             System.out.println("\nThe best result is: " + bestResult);

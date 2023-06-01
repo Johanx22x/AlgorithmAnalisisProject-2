@@ -114,7 +114,7 @@ public class Chromosome {
             return false; // Return false
         }
 
-        return false; // Return false
+        return true; // Return true
     }
 
     /**

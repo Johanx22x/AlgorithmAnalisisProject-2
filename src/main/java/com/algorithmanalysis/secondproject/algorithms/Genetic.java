@@ -37,6 +37,8 @@ public class Genetic {
     // Result
     private Chromosome result = null; // Result
                                       
+    private String crossoverBuffer = ""; // Crossover buffer 
+    private String mutationBuffer = ""; // Mutation buffer
 
     /**
      * Run the genetic algorithm
@@ -94,25 +96,39 @@ public class Genetic {
                     Chromosome offspring = genetic.crossover(parent1, parent2);
                     Measurement.incrementAssignments(1); // Increment the assignments by 1 for the previous line
 
+                    genetic.crossoverBuffer += "Parent 1: " + parent1.toString() + "\n"; // Add the parent 1 to the crossover buffer
+                    genetic.crossoverBuffer += "Parent 2: " + parent2.toString() + "\n"; // Add the parent 2 to the crossover buffer 
+
                     Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
                     if (offspring == null) {
                         totalOfGenerations--;
+                        genetic.crossoverBuffer += "Crossover failed\n\n"; // Add the message to the crossover buffer
                         Measurement.incrementAssignments(1); // Increment the assignments by 1 for the previous line
                         continue;
+                    } else {
+                        genetic.crossoverBuffer += "Offspring: " + offspring.toString() + "\n\n"; // Add the offspring to the crossover buffer
                     }
 
+                    genetic.mutationBuffer += "Original chromosome: " + offspring.toString() + "\n"; // Add the original chromosome to the mutation buffer
+                    int offspringFitness = offspring.fitness(); // Or use a custom fitness evaluation method
+                                                                                                     
                     // Mutation
                     Chromosome offspringMutated = genetic.mutation(offspring);
                     Measurement.incrementAssignments(1); // Increment the assignments by 1 for the previous line
 
+                    genetic.mutationBuffer += "Mutated chromosome: " + offspringMutated.toString() + "\n"; // Add the mutated chromosome to the mutation buffer
+
                     Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
-                    if (offspringMutated.fitness() > offspring.fitness()) {
+                    if (offspringMutated.fitness() > offspringFitness) {
                         offspring = offspringMutated;
+                        genetic.mutationBuffer += "The mutated chromosome is better than the original chromosome\n\n"; // Add the message to the mutation buffer
                         Measurement.incrementAssignments(1); // Increment the assignments by 1 for the previous line
+                    } else {
+                        genetic.mutationBuffer += "The mutated chromosome is worse than the original chromosome\n\n"; // Add the message to the mutation buffer
                     }
 
                     // Evaluate fitness
-                    int offspringFitness = offspring.fitness(); // Or use a custom fitness evaluation method
+                    offspringFitness = offspring.fitness(); // Or use a custom fitness evaluation method
                     Measurement.incrementAssignments(1); // Increment the assignments by 1 for the previous line
 
                     // Update population
@@ -268,6 +284,30 @@ public class Genetic {
     }
 
     /**
+     * Check if a chromosome contains a specific allele 
+     *
+     * This method is responsible for checking if a chromosome contains a specific allele 
+     *
+     * @param Chromosome chromosome 
+     * @param Allele Allele
+     * @return boolean result
+     */
+    public boolean containsAllele(Chromosome chromosome, Allele allele) {
+        for (Allele a : chromosome.getAlleles()) { // For each allele in the chromosome
+            Measurement.incrementComparisons(1); // Increment the comparisons by 1 for each iteration
+                                                 
+            Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
+            if (a.getProfessor().getName().equals(allele.getProfessor().getName()) && // If the professor name is equal
+                a.getCourse().getName().equals(allele.getCourse().getName())) { // If the course name is equal
+                return true; // Return true
+            }
+        }
+        Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the last for iteration
+
+        return false; // Return false
+    }
+
+    /**
      * Mutation 
      *
      * This method is responsible for mutating the chromosomes
@@ -277,28 +317,26 @@ public class Genetic {
      */
     public Chromosome mutation(Chromosome chromosome) {
         // Define maxAttempts
-        int maxAttempts = 20;
+        int maxAttempts = 100;
 
         // Get a random allele from population
         Allele allele = this.population.get((int) (Math.random() * (this.totalOfCourses * this.totalOfProfessors)));
-
         Measurement.incrementAssignments(2); // Increment the assignments by 2 for the previous 2 lines
 
-        while (chromosome.isOptimalAllele(allele) && maxAttempts > 0) { // While the allele is optimal and maxAttempts is greater than 0
+        while (!chromosome.isOptimalAllele(allele) || containsAllele(chromosome, allele)) { // While the allele is optimal and maxAttempts is greater than 0 and the chromosome does not contain the allele
             Measurement.incrementComparisons(1); // Increment the comparisons by 1 for each iteration
+                                                 
+            Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
+            if (maxAttempts == 0) { // If maxAttempts is equal to 0
+                // Abort the mutation
+                return chromosome; // Return the chromosome
+            }
                                                  
             allele = this.population.get((int) (Math.random() * (this.totalOfCourses * this.totalOfProfessors)));
             maxAttempts--;
             Measurement.incrementAssignments(2); // Increment the assignments by 2 for the previous 2 lines
         }
         Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the last failed iteration
-
-        Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
-        if (maxAttempts == 0) { // If maxAttempts is equal to 0
-            // Abort the mutation
-            System.out.println("Mutation aborted");
-            return chromosome; // Return the chromosome
-        }
 
         // Change the result allele on the same course index
         for (int i = 0; i < chromosome.getAlleles().size(); i++) {
@@ -484,6 +522,28 @@ public class Genetic {
      */
     public int getFitness() {
         return this.result.fitness();
+    }
+
+    /**
+     * Get crossover buffer 
+     *
+     * @return {@link String} crossoverBuffer
+     */
+    public String getCrossoverBuffer() {
+        String result = crossoverBuffer;
+        crossoverBuffer = "";
+        return result;
+    }
+
+    /**
+     * Get mutation buffer 
+     *
+     * @return {@link String} mutationBuffer
+     */
+    public String getMutationBuffer() {
+        String result = mutationBuffer;
+        mutationBuffer = "";
+        return result;
     }
 
     /**
