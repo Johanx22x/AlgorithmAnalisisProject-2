@@ -1,0 +1,106 @@
+@startuml
+
+partition **function** runBacktracking {
+    :alleles
+     totalOfCourses
+     totalOfProfessors/
+
+     :matrix = int[totalOfCourses][totalOfProfessors]]
+     :i = 0]
+
+     while (i < alleles.size()) is (yes)
+         :professorIndex = alleles[i].getProfessor().getIndex()]
+         :courseIndex = alleles[i].getCourse().getIndex()]
+         :matrix[courseIndex][professorIndex] = alleles[i].getGrade()]
+         :i++]
+     endwhile
+
+     :bestCombination = getBestCombination(matrix)]
+     (R)
+     detach
+     (R)
+
+     :i = 0];
+     while (i < bestCombination.length) is (yes)
+         :print(matrix[i][bestCombination[i]])]
+         :i++]
+     endwhile
+
+     :print(getFitness(bestCombination, matrix))]
+
+     if (App.verbose) is (yes)
+         :print(totalOfCombinations)]
+     endif
+}
+
+partition **function** getBestCombination {
+    start
+    :matrix/
+
+
+    :bestCombination = int[matrix.length]\ncombination = int[matrix.length]\nprofessors = int[matrix[0].length]
+    :generateCombination(matrix, 0, combination, bestCombination, professors)]
+    (R)
+    detach
+    (R)
+
+    :return bestCombination/
+    detach
+}
+
+
+partition **function** generateCombination {
+     :matrix
+      index
+      combination
+      bestCombination
+      professors/
+    
+     :totalOfProfessors = matrix[0].length]
+
+     if (index == matrix.length) then (yes)
+         :totalOfCombinations++]
+
+         :fitness = getFitness(combination, matrix)]
+         if (fitness) greater (getFitness(bestCombination, matrix)) then (yes)
+             :System.arraycopy(combination, 0, bestCombination, 0, combination.length)]
+         endif
+         stop
+     endif
+
+     :i = 0]
+     while (i < totalOfProfessors) is (yes)
+         if (professors[i] < 4 and matrix[index][i] != -1) then (yes)
+             :combination[index] = i]
+             :professors[i]++]
+
+             :generateCombination(matrix, index + 1, combination, bestCombination, professors)]
+             (R)
+             detach
+             (R)
+             :professors[i]--]
+             :combination[index] = -1]
+         endif
+        :i++]
+     endwhile
+
+     :return/
+     end
+}
+
+partition **function** getFitness {
+    :combination
+     matrix/
+
+    :fitness = 0]
+
+    :i = 0]
+    while (i < combination.length) is (yes)
+        :fitness += matrix[i][combination[i]]]
+        :i++]
+    endwhile
+    :return/
+    detach
+}
+
+@enduml
