@@ -34,7 +34,7 @@ import moe.leer.codeflowcore.CodeFlow;
  * @version 2.1
  */
 public class App {
-    public static boolean verbose = false; // Verbose mode
+    public static boolean verbose = true; // Verbose mode
 
     public static void main(String[] args) throws IOException, ParseException {
         // Get the files names
@@ -61,10 +61,12 @@ public class App {
 
                 Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
                 if (genetic.getResult() == null) { // If there is no result
+                    System.out.println();
                     printError(ErrorCodes.ERROR_INCAPABLE); // Print the error
-                    continue;
+                    System.out.println();
+                    continue; // Continue to the next file
                 }
-
+                
                 Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
                 if (bestResult == null || genetic.getFitness() > bestResult.fitness()) { // If the fitness is better
                                                                                          // than the best result
@@ -72,7 +74,10 @@ public class App {
                     Measurement.incrementAssignments(1); // Increment the assignments by 1 for the best result
                 }
             } else { // If there is an error
+                System.out.println();
                 printError(error); // Print the error
+                System.out.println();
+                continue; // Continue to the next file
             }
 
             // Write crossoverBuffer and mutationBuffer to file fileName+"_crossoverBuffer.txt" and fileName+"_mutationBuffer.txt"
@@ -128,8 +133,15 @@ public class App {
             ParsedData parsedData = LoadJson.fromFile(file);
 
             // Create a matrix with the data
-            Dynamic.runDynamicAlgorithm(parsedData.alleles, parsedData.courses,
+            ErrorCodes error = Dynamic.runDynamicAlgorithm(parsedData.alleles, parsedData.courses,
                     parsedData.alleles.size() / parsedData.courses); // Run the genetic algorithm
+
+            if (!(error == ErrorCodes.NO_ERROR)) { // If there is an error
+                System.out.println();
+                printError(error); // Print the error
+                System.out.println();
+                continue; // Continue to the next file
+            }
 
             // Print the measurements
             System.out.println("\n" + Measurement.getMeasurement());

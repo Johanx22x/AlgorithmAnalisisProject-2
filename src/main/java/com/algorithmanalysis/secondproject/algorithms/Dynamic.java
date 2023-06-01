@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Collections;
 
 import com.algorithmanalysis.secondproject.models.Allele;
+import com.algorithmanalysis.secondproject.utils.ErrorCodes;
+import com.algorithmanalysis.secondproject.App;
 
 public class Dynamic {
     /**
@@ -14,7 +16,7 @@ public class Dynamic {
      * @param totalOfCourses    The total of totalOfCourses 
      * @param totalOfProfessors The total of totalOfProfessors 
      */
-    public static void runDynamicAlgorithm(ArrayList<Allele> alleles, int totalOfCourses, int totalOfProfessors) {
+    public static ErrorCodes runDynamicAlgorithm(ArrayList<Allele> alleles, int totalOfCourses, int totalOfProfessors) {
         // Create the matrix
         List<List<Integer>> transposedMatrix = new ArrayList<>();
         for (int i = 0; i < totalOfCourses; i++) {
@@ -45,8 +47,7 @@ public class Dynamic {
         }
 
         if (!checkMatrix(transposedMatrix)) {
-            System.out.println("Invalid matrix");
-            System.exit(0);
+            return ErrorCodes.ERROR_INCAPABLE;
         }
 
         List<Integer> bestCombination = new ArrayList<>();
@@ -57,6 +58,7 @@ public class Dynamic {
         // Check if there is a course with only one teacher available
         // For example: [-1, 8, -1] -> 8
         for (int i = 0; i < transposedMatrix.size(); i++) {
+
             List<Integer> row = transposedMatrix.get(i);
             if (Collections.frequency(row, -1) == row.size() - 1) {
                 // Assign the teacher with grade different than -1 to the course
@@ -69,7 +71,12 @@ public class Dynamic {
 
         List<Integer> difference = calculateDifference(transposedMatrix, bestCombination);
 
+        int count = 0;
+        System.out.println("\nFinding the best combination...");
         while (bestCombination.contains(-1)) {
+            if (count % 5 == 0 && App.verbose) {
+                System.out.println("\tStage " + count + ": " + bestCombination);
+            }
             int index = maxIndex(difference);
 
             List<Integer> row = transposedMatrix.get(index);
@@ -85,7 +92,10 @@ public class Dynamic {
             }
 
             difference = calculateDifference(transposedMatrix, bestCombination);
+            count++;
         }
+
+        System.out.println("\tFinal stage: " + bestCombination);
 
         List<Integer> result = new ArrayList<>();
         int fitness = 0;
@@ -94,6 +104,7 @@ public class Dynamic {
             fitness += backupMatrix.get(i).get(bestCombination.get(i));
         }
 
+        System.out.println("Doing interchanges...");
         bestCombination = interchangeCourses(possibilitiesMatrix, bestCombination, result);
 
         result.clear();
@@ -106,6 +117,8 @@ public class Dynamic {
         System.out.println("\nBest professors combination: " + bestCombination);
         System.out.println("Best grades combination: " + result);
         System.out.println("\n\tOverall calification (fitness): " + fitness);
+
+        return ErrorCodes.NO_ERROR;
     }
 
     public static int maxIndex(List<Integer> array) {
@@ -136,10 +149,11 @@ public class Dynamic {
             int professor = bestCombination.get(index);
             int professorToInterchange = bestCombination.get(bestInterchange);
             // Check if the professor has less than 4 courses
-            if (countOccurrences(bestCombination, professorToInterchange) < 4) {
+            if (countOccurrences(bestCombination, professorToInterchange) < 5) {
                 // Interchange courses
                 bestCombination.set(index, professorToInterchange);
                 bestCombination.set(bestInterchange, professor);
+                System.out.println("\tInterchange found: " + bestCombination);
             } else {
                 possibilitiesMatrix.get(bestInterchange).set(professor, -1);
                 interchangeCourses(possibilitiesMatrix, bestCombination, result);
