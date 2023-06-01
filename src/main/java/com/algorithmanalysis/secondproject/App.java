@@ -2,6 +2,7 @@ package com.algorithmanalysis.secondproject;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -190,7 +191,14 @@ public class App {
      */
     private static ArrayList<String> getFiles() {
         File folder = new File("data"); // Get the data folder
-        File[] listOfFiles = folder.listFiles(); // Get the files in the data folder
+        // Get file with extension .json
+        FilenameFilter jsonFilter = new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.endsWith(".json");
+            }
+        };
+        File[] listOfFiles = folder.listFiles(jsonFilter); // Get the files in the data folder
 
         ArrayList<String> files = new ArrayList<>(); // Create a list of files
         for (File file : listOfFiles) { // For each file
