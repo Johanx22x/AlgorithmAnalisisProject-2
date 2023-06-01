@@ -111,47 +111,49 @@ public class App {
 
         // Backtracking algorithm
         // System.out.println("\nBacktracking algorithm");
-        // for (String file : files) {
-        //     Measurement.reset(); // Reset the measurements
-        //     System.out.println("\nFile: " + file); // Print the file name
-                                                   
-        //     ParsedData data = LoadJson.fromFile(file);
-        //     Optional<List<Allele>> filteredData = Backtracking.getCombinations(data.alleles,
-        //             data.courses).stream()
-        //             .sorted(Comparator.comparingInt(combination -> -combination.stream().mapToInt(Allele::getGrade).sum()))
-        //             .findFirst();
+        // // for (String file : files) {
+        // Measurement.reset(); // Reset the measurements
+        // // System.out.println("\nFile: " + file); // Print the file name
+                                               
+        // String file = "data/data1.json";
+        // ParsedData data = LoadJson.fromFile(file);
+        // Optional<List<Allele>> filteredData = Backtracking.getCombinations(data.alleles,
+        //         data.courses).stream()
+        //         .sorted(Comparator.comparingInt(combination -> -combination.stream().mapToInt(Allele::getGrade).sum()))
+        //         .findFirst();
 
-        //     System.out.println(filteredData);
+        // System.out.println(filteredData);
 
-        //     if (filteredData.isPresent()) {
-        //         Chromosome chromosome = new Chromosome(filteredData.get());
-        //         System.out.println(chromosome);
-        //         System.out.println(chromosome.fitness());
-        //     } else {
-        //         System.out.println("No solution found");
-        //     }
+        // if (filteredData.isPresent()) {
+        //     Chromosome chromosome = new Chromosome(filteredData.get());
+        //     System.out.println(chromosome);
+        //     System.out.println(chromosome.fitness());
+        // } else {
+        //     System.out.println("No solution found");
+        // }
 
-        //     // Print the measurements
-        //     System.out.println("\n" + Measurement.getMeasurement());
-        //     System.out.println();
+        // // Print the measurements
+        // System.out.println("\n" + Measurement.getMeasurement());
+        // System.out.println();
         // }
         
-        // // Backtracking algorithm (second approach)
+        // Backtracking algorithm (second approach)
         // System.out.println("\nBacktracking algorithm (second approach):");
         // for (String file : files) {
-        //     Measurement.reset(); // Reset the measurements
-        //     System.out.println("\nFile: " + file); // Print the file name
+            // String file = "data/data0.json";
+            // Measurement.reset(); // Reset the measurements
+            // System.out.println("\nFile: " + file); // Print the file name
 
-        //     // Load the data from the file
-        //     ParsedData parsedData = LoadJson.fromFile(file);
+            // // Load the data from the file
+            // ParsedData parsedData = LoadJson.fromFile(file);
 
-        //     // Create a matrix with the data
-        //     Backtracking2.runBacktracking(parsedData.alleles, parsedData.courses,
-        //             parsedData.alleles.size() / parsedData.courses); // Run the genetic algorithm
+            // // Create a matrix with the data
+            // Backtracking2.runBacktracking(parsedData.alleles, parsedData.courses,
+            //         parsedData.alleles.size() / parseprofessors dData.courses); // Run the genetic algorithm
 
-        //     // Print the measurements
-        //     System.out.println("\n" + Measurement.getMeasurement());
-        //     System.out.println();
+            // // Print the measurements
+            // System.out.println("\n" + Measurement.getMeasurement());
+            // System.out.println();
         // }
     }
 
