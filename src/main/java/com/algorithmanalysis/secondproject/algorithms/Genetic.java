@@ -240,6 +240,8 @@ public class Genetic {
         // Calculate the total of generations (using a linear function calculated based on the first file population size and the last file population size)
         // To approximate the desired total of generations, we use the following formula: (19700/17) * (populationSize) - (54000/17)
         totalOfGenerations = (int) ((int)(19700/17) * (this.populationSize) - (int)(54000/17)); // Calculate the total of generations
+        // totalOfGenerations = this.populationSize;
+        System.out.println("Total of generations: " + totalOfGenerations); // Print the total of generations
         Measurement.incrementAssignments(1); // Increment the assignments by 1 for the previous line
 
         return ErrorCodes.NO_ERROR; // Return no error
@@ -275,7 +277,7 @@ public class Genetic {
      */
     public Chromosome mutation(Chromosome chromosome) {
         // Define maxAttempts
-        int maxAttempts = 100;
+        int maxAttempts = 20;
 
         // Get a random allele from population
         Allele allele = this.population.get((int) (Math.random() * (this.totalOfCourses * this.totalOfProfessors)));

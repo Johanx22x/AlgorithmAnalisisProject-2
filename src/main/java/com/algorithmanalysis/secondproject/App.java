@@ -91,23 +91,23 @@ public class App {
             System.out.println();
         }
         
-        // // Dynamic algorithm
-        // System.out.println("\nDynamic algorithm:");
-        // for (String file : files) {
-        //     Measurement.reset(); // Reset the measurements
-        //     System.out.println("\nFile: " + file); // Print the file name
+        // Dynamic algorithm
+        System.out.println("\nDynamic algorithm:");
+        for (String file : files) {
+            Measurement.reset(); // Reset the measurements
+            System.out.println("\nFile: " + file); // Print the file name
 
-        //     // Load the data from the file
-        //     ParsedData parsedData = LoadJson.fromFile(file);
+            // Load the data from the file
+            ParsedData parsedData = LoadJson.fromFile(file);
 
-        //     // Create a matrix with the data
-        //     Dynamic.runDynamicAlgorithm(parsedData.alleles, parsedData.courses,
-        //             parsedData.alleles.size() / parsedData.courses); // Run the genetic algorithm
+            // Create a matrix with the data
+            Dynamic.runDynamicAlgorithm(parsedData.alleles, parsedData.courses,
+                    parsedData.alleles.size() / parsedData.courses); // Run the genetic algorithm
 
-        //     // Print the measurements
-        //     System.out.println("\n" + Measurement.getMeasurement());
-        //     System.out.println();
-        // }
+            // Print the measurements
+            System.out.println("\n" + Measurement.getMeasurement());
+            System.out.println();
+        }
 
         // Backtracking algorithm
         // System.out.println("\nBacktracking algorithm");
