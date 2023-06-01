@@ -105,13 +105,14 @@ public class Dynamic {
         }
 
         System.out.println("Doing interchanges...");
-        bestCombination = interchangeCourses(possibilitiesMatrix, bestCombination, result);
-
-        result.clear();
-        fitness = 0;
-        for (int i = 0; i < bestCombination.size(); i++) {
-            result.add(backupMatrix.get(i).get(bestCombination.get(i)));
-            fitness += backupMatrix.get(i).get(bestCombination.get(i));
+        while (result.contains(-1)) {
+            bestCombination = interchangeCourses(possibilitiesMatrix, bestCombination, result);
+            result.clear();
+            fitness = 0;
+            for (int i = 0; i < bestCombination.size(); i++) {
+                result.add(backupMatrix.get(i).get(bestCombination.get(i)));
+                fitness += backupMatrix.get(i).get(bestCombination.get(i));
+            }
         }
 
         System.out.println("\nBest professors combination: " + bestCombination);
