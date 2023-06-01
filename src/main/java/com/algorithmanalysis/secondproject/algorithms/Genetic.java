@@ -117,6 +117,9 @@ public class Genetic {
                     Measurement.incrementAssignments(1); // Increment the assignments by 1 for the previous line
 
                     genetic.mutationBuffer += "Mutated chromosome: " + offspringMutated.toString() + "\n"; // Add the mutated chromosome to the mutation buffer
+                                                                                                           
+                    genetic.mutationBuffer += "Original chromosome fitness: " + offspringFitness + "\n"; // Add the original chromosome fitness to the mutation buffer 
+                    genetic.mutationBuffer += "Mutated chromosome fitness: " + offspringMutated.fitness() + "\n"; // Add the mutated chromosome fitness to the mutation buffer
 
                     Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
                     if (offspringMutated.fitness() > offspringFitness) {
