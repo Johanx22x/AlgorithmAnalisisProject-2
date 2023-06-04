@@ -1,0 +1,103 @@
+@startuml
+start
+partition **function** runDynamicAlgorithm {
+    :alleles
+    totalOfCourses
+    totalOfProfessors/
+    :transposedMatrix = int[][] ]
+    :i = 0]
+    while (i < totalOfCourses) is (yes)
+        :row = int[] ]
+        :j = 0]
+        while (j < totalOfProfessors) is (yes)
+            :row.add(0)]
+            :j++]
+        endwhile (no)
+        :transposedMatrix.add(row)]
+        :i++]
+    endwhile (no)
+    :a = 0]
+    while (a < alleles.size()) is (yes)
+        :allele = alleles.get(a)]
+        :transposedMatrix.get(allele.getCourse().getIndex()).set(allele.getGrade())]
+    endwhile (no)
+    :possibilitiesMatrix = int[][] ]
+    :backupMatrix = int[][] ]
+    :r = 0]
+    while (r < transposedMatrix.size()) is (yes)
+        :row = transposedMatrix.get(r)]
+        :column = int[] ]
+        :backupColumn = int[] ]
+        :i = 0]
+        while (i < row.size()) is (yes)
+            :column.add(row.get(i))]
+            :backupColumn.add(row.get(i))]
+        endwhile (no)
+        :backupMatrix.add(backupColumn)]
+        :possibilitiesMatrix.add(column)]
+    endwhile (no)
+    if (!checkMatrix(transposedMatrix)) then (yes)
+        :ErrorCodes.ERROR_INCAPABLE/
+        stop
+    else (no)
+    endif
+    :bestCombination = int[] ]
+    :i = 0]
+    while (i < transposedMatrix.size()) is (yes)
+        :bestCombination.add(-1)]
+        :i++]
+    endwhile (no)
+    :i = 0]
+    while (i < transposedMatrix.size()) is (yes)
+        :row = transposedMatrix.get(i)]
+        if (Collections.frequency(row, -1) == row.size() -1) then (yes)
+            :teacher = row.indexOf(row.stream().filter(g -> g != -1).findFirst().orElse(-1))]
+            :bestCombination.set(i, teacher)]
+            :possibilitiesMatrix.get(i).set(teacher, -1)]
+        else (no)
+        endif
+    endwhile (no)
+    :difference = calculateDifference(transposedMatrix, bestCombination)]
+    :count = 0]
+    while (bestCombination.contains(-1)) is (yes)
+        if (count % 5 == 0 && App.verbose) then (yes)
+            :print the current stage and best combination]
+        else (no)
+        endif
+        :index = maxIndex(difference)]
+        :row = transposedMatrix.get(index)]
+        :professor = row.indexOf(Collections.max(row))]
+        if (countOccurences(bestCombination, professor) < 4) then (yes)
+            :bestCombination.set(index, professor)]
+            :possibilitiesMatrix.get(index).set(professor, -1)]
+        else (no)
+            :row.set(professor, -1)]
+            :possibilitiesMatrix.get(index).set(professor, -1)]
+        endif
+        :difference = calculateDifference(transposedMatrix, bestCombination)]
+        :count++]
+    endwhile (no)
+    :result = int[] ]
+    :fitness = 0]
+    :i = 0]
+    while (i < bestCombination.size()) is (yes)
+        :result.add(backupMatrix.get(i).get(bestCombination.get(i)))]
+        :fitness += backupMatrix.get(i).get(bestCombination.get(i))]
+        :i++]
+    endwhile (no)
+    while (result.contains(-1)) is (yes)
+        :bestCombination = interChangeCourses(possibilitiesMatrix, bestCombination, result)]
+        :result.clear()]
+        :fitness = 0]
+        :i = 0]
+        while (i < bestCombination.size()) is (yes)
+            :result.add(backupMatrix.get(i).get(bestCombination.get(i)))]
+            :fitness += backupMatrix.get(i).get(bestCombination.get(i))]
+            :i++]
+        endwhile (no)
+    endwhile (no)
+
+    :ErrorCodes.NO_ERROR/
+}
+end
+@enduml
