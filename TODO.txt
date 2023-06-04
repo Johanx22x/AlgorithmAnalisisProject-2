@@ -1,0 +1,3 @@
+Mediciones analiticas
+Bitacoras y Minutas
+Agregar labels a las graficas
