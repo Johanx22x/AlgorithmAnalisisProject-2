@@ -75,6 +75,10 @@ public class Measurement {
         memoryUsage += n;
     }
 
+    public static void incrementMemoryUsage(long n) {
+        memoryUsage += n;
+    }
+
     /**
      * Getter of the size of the input.
      *
@@ -129,6 +133,6 @@ public class Measurement {
         return "Measurement:\n\tSize: \t\t\t" + size + " elements\n\tAssignments: \t\t" + assignments
                 + "\n\tComparisons: \t\t" + comparisons +
                 "\n\tTotal instructions: \t" + (int) (assignments + comparisons) + "\n\tMemory usage: \t\t"
-                + memoryUsage + " bytes" + "\n\tTime: \t" + currentTime / 1000 + "ms";
+                + Math.abs(memoryUsage / 1e+6) + " mb" + "\n\tTime: \t" + currentTime / 1000 + "ms";
     }
 }

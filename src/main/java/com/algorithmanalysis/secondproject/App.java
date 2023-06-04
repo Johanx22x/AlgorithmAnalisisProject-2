@@ -46,7 +46,10 @@ public class App {
             Measurement.incrementAssignments(1); // Increment the assignments by 1 for the genetic object
 
             Measurement.beginTime();
+            long a = Runtime.getRuntime().totalMemory();
             ErrorCodes error = Genetic.runGenetic(genetic, file); // Run the genetic algorithm
+            long b = Runtime.getRuntime().freeMemory();
+            Measurement.incrementMemoryUsage(a - b);
             Measurement.endTime();
 
             Measurement.incrementAssignments(1); // Increment the assignments by 1 for the error code
@@ -132,8 +135,12 @@ public class App {
 
             // Create a matrix with the data
             Measurement.beginTime();
+
+            long a = Runtime.getRuntime().totalMemory();
             ErrorCodes error = Dynamic.runDynamicAlgorithm(parsedData.alleles, parsedData.courses,
                     parsedData.alleles.size() / parsedData.courses); // Run the genetic algorithm
+            long b = Runtime.getRuntime().freeMemory();
+            Measurement.incrementMemoryUsage(a - b);
             Measurement.endTime();
 
             if (!(error == ErrorCodes.NO_ERROR)) { // If there is an error
@@ -188,8 +195,12 @@ public class App {
 
             // Create a matrix with the data
             Measurement.beginTime();
+
+            long a = Runtime.getRuntime().totalMemory();
             Backtracking2.runBacktracking(parsedData.alleles, parsedData.courses,
                     parsedData.alleles.size() / parsedData.courses); // Run the backtracking2 algorithm
+            long b = Runtime.getRuntime().freeMemory();
+            Measurement.incrementMemoryUsage(a - b);
             Measurement.endTime();
 
             // Print the measurements
