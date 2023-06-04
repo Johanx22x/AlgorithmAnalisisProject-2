@@ -1,0 +1,24 @@
+@startuml
+class Measurement {
+  - currentTime: long
+  - size: int
+  - assignments: int
+  - comparisons: int
+  - memoryUsage: int
+
+  + reset(): void
+  + beginTime(): void
+  + endTime(): void
+  + setSize(size: int): void
+  + incrementAssignments(n: int): void
+  + incrementComparisons(n: int): void
+  + incrementMemoryUsage(n: int): void
+  + incrementMemoryUsage(n: long): void
+  + getSize(): int
+  + getAssignments(): int
+  + getComparisons(): int
+  + getTotalOfInstructions(): int
+  + getMemoryUsage(): int
+  + getMeasurement(): String
+}
+@enduml
