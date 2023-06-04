@@ -1,0 +1,8 @@
+@startuml
+enum ErrorCodes {
+  - CROSSOVER_ERROR
+  - ERROR_INCAPABLE
+  - MAX_ATTEMPTS_EXCEEDED
+  - NO_ERROR
+}
+@enduml

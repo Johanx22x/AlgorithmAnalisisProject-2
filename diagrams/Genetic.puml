@@ -1,0 +1,180 @@
+@startuml
+start
+
+partition **function** runGenetic {
+    :genetic
+    fileName/
+
+    :parsedData = loadData(filename)]
+
+    :genetic.update(parsedData)]
+
+    :error = genetic.createChromosomes()]
+
+    if (error != NO_ERROR) then (yes)
+        :return error/
+        stop
+    else (no)
+    endif
+
+    :totalOfGenerations = genetic.getTotalOfGenerations()]
+
+    while (totalOfGenerations > 0) is (yes)
+        :i = 0]
+        while (i < genetic.getChromosomes().size()) is (yes)
+            :j = 0]
+            while (j < genetic.getChromosomes().size()) is (yes)
+                label continue_loop
+                if (i != j) then (yes)
+                    :parent1 = genetic.selection(i)]
+                    :parent2 = genetic.selection(j)]
+
+                    :offspring = genetic.crossover(parent1, parent2)]
+
+                    if (offspring == null) then (yes)
+                        :totalOfGenerations--]
+                        goto continue_loop
+                    else (no)
+                        :add offspring to offspring buffer]
+                    endif
+
+                    :offspringFitness = offsprint.fitness()]
+                    :offsprintMutated = genetic.mutation(offspring)]
+
+
+                    if (offsprintMutated.fitness() > offspringFitness) then (yes)
+                        :offspring = offsprintMutated]
+                    else (no)
+                        :signal that the mutated chromosome is worse than the original]
+                    endif
+
+                    :offspringFitness = offspring.fitness()]
+
+                    :leastFitIndex = 0]
+                    :leastFitFitness = Integer.MAX_VALUE]
+
+                    :k = 0]
+                    while (k < genetic.getChromosomes().size()) is (yes)
+                        :chromosome = genetic.getChromosome(k)]
+                        :chromosomeFitness = chromosome.fitness()]
+                        if (chromosomeFitness < leastFitness) then
+                            :leastFitness = chromosomeFitness]
+                            :leastFitIndex = k]
+                        else (no)
+                        endif
+                    endwhile (no)
+
+                    if (offspringFitness > leastFitness) then (yes)
+                        :genetic.getChromosomes(leastFitIndex).setAlleles(offspring.getAlleles())]
+                        :add = true]
+
+                        while (chromosome in bestChromosomes) is (yes)
+                            if (chromosome.fitness() == offspring.fitness()) then (yes)
+                                :add = false]
+                                break
+                            else (no)
+                            endif
+                        endwhile (no)
+
+                        if (add) then (yes)
+                            if (bestChromosomes.size() >= 5) then (yes)
+                                :bestChromosomes.remove(0)]
+                            else (no)
+                            endif
+                            while (index < bestChromosomes.size() && bestChromosomes.get(index).fitness() < offspringFitness) is (yes)
+                                :index++]
+                            endwhile (no)
+
+                            :bestChromosomes.add(index, offspring)]
+                        else (no)
+                        endif
+
+                    else (no)
+                    endif
+
+                else (no)
+                endif
+                :j++]
+            endwhile (no)
+            :i++]
+        endwhile (no)
+    endwhile (no)
+}
+
+end
+
+/' En primer lugar, se define una clase llamada Genetic que contiene los métodos y '/
+/' variables necesarios para ejecutar el algoritmo genético. '/ 
+
+/' La función principal es runGenetic, que recibe un objeto Genetic y un nombre de '/
+/' archivo como parámetros. Esta función carga los datos del archivo y configura '/
+/' los parámetros iniciales del algoritmo genético, como el tamaño de la '/
+/' población, el número total de profesores y cursos, y el número total de '/
+/' generaciones. Luego, ejecuta el algoritmo genético iterativamente durante el '/
+/' número especificado de generaciones. '/
+
+/' Cabe destacar que la cantidad total de generaciones que realiza el programa es '/
+/' igual al valor de población extraído de cada archivo JSON. '/
+
+/' Dentro del bucle principal del algoritmo genético, se realiza la selección, el '/
+/' cruce, la mutación y la evaluación de la aptitud para cada par de cromosomas '/
+/' seleccionados. La selección se realiza mediante el método selection, que elige '/
+/' un cromosoma con respecto a un índice designado previamente en la población '/
+/' general. '/
+
+/' El cruce se realiza mediante el método crossover, que implementa el cruce de '/
+/' dos cromosomas utilizando el operador de cruce de puntos de cruce mixtos (PMX). '/
+/' Los puntos de cruce se definen como pmxPoint1 y pmxPoint2 y se seleccionan '/
+/' según la proporción del total de cursos, en caso de que el cruce retorne un '/
+/' resultado invalido, se continua con el siguiente par de cromosomas. '/
+
+/' Los motivos para que el método crossover retorne un resultado invalido se debe '/
+/' a que a la hora de hacer el cruce no existe una manera de realizarlo sin que se '/
+/' incumplan las restricciones prestablecidas para el proyecto y las distintas '/
+/' estrategias de diseño. '/
+
+/' La mutación se realiza mediante el método mutation, el cual aplica una mutación '/
+/' aleatoria a un cromosoma. En este caso, la mutación se lleva a cabo '/
+/' seleccionando un alelo aleatorio del conjunto inicial de alelos. Sin embargo, '/
+/' se aplican restricciones para garantizar que la mutación sea válida y mejore la '/
+/' aptitud del cromosoma. '/
+
+/' Estas restricciones son las siguientes: el alelo obtenido no puede tener una '/
+/' nota igual a -1 (lo cual indica que el profesor no puede dar ese curso) y '/
+/' tampoco puede pertenecer a un profesor que ya tenga asignados 4 cursos. Estas '/
+/' restricciones aseguran que no se exceda el límite de cursos por profesor y que '/
+/' no se agreguen cursos inválidos. '/
+
+/' Si el alelo seleccionado cumple con las restricciones, se introduce en el '/
+/' cromosoma reemplazando al curso con el mismo nombre. Luego, se calcula el '/
+/' fitness tanto para el cromosoma original como para el cromosoma posterior a la '/
+/' mutación. '/
+
+/' Para decidir si se mantiene la mutación o no, se compara la aptitud de ambos '/
+/' cromosomas. Si el cromosoma mutado tiene una aptitud superior al cromosoma '/
+/' original, se conserva la mutación. De lo contrario, se descarta la mutación y '/
+/' se mantiene el cromosoma original. '/
+
+/' La función de aptitud o fitness calcula un valor numérico que representa la '/
+/' calidad de un cromosoma. En este caso, se calcula sumando todas las notas de la '/
+/' combinación de cursos. Un valor mayor indica un cromosoma mejor. La función de '/
+/' aptitud también se utiliza en el algoritmo dinámico para encontrar la mejor '/
+/' solución, ya que no se tiene un objetivo específico definido. '/
+
+/' Después de la mutación y la evaluación de la aptitud, se actualiza la población '/
+/' reemplazando los cromosomas menos aptos con los descendientes mutados si su '/
+/' aptitud es mayor. Además, se mantiene una lista de los 5 mejores cromosomas '/
+/' (diferentes entre sí) en la variable bestChromosomes, para mostrar los mejores '/
+/' cromosomas generados posterior a la ejecución del algoritmo. '/
+
+/' Finalmente, se selecciona el mejor cromosoma de la población y se almacena en '/
+/' la variable result. Se realiza una comparación de la aptitud de cada cromosoma '/
+/' con el cromosoma anterior y se actualiza el result si se encuentra un cromosoma '/
+/' con una aptitud superior. '/
+
+/' En resumen, la estrategia genética implementada en este proyecto utiliza el '/
+/' operador de cruce PMX, una mutación aleatoria y la evaluación de la aptitud '/
+/' para evolucionar una población de cromosomas y encontrar la mejor solución al '/
+/' problema de optimización. '/
+
+@enduml

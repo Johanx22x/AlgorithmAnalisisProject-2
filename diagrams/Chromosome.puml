@@ -1,0 +1,16 @@
+@startuml
+class Chromosome {
+  - alleles: ArrayList<Allele>
+
+  + Chromosome(alleles: ArrayList<Allele>)
+  + Chromosome(alleles: List<Allele>)
+  + generateRandom(totalOfProfessors: int, totalOfCourses: int): ErrorCodes
+  + isOptimalAllele(allele: Allele): boolean
+  + isValidCourse(allele: Allele, alleles: ArrayList<Allele>): ReturnOption
+  + isValidProfessor(allele: Allele, newAlleles: ArrayList<Allele>, alleles: ArrayList<Allele>): ReturnOption
+  + fitness(): int
+  + getAlleles(): ArrayList<Allele>
+  + setAlleles(alleles: ArrayList<Allele>): void
+  + toString(): String
+}
+@enduml
