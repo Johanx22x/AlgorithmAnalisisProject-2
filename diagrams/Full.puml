@@ -1,0 +1,43 @@
+@startuml
+class Allele {
+    - professor: Professor
+    - course: Course
+    - grade: int
+
+    + Allele(professor: Professor, course: Course, grade: int)
+    + getAllele(): Allele
+    + setAllele(allele: Allele): void
+    + getProfessor(): Professor
+    + setProfessor(professor: Professor): void
+    + getCourse(): Course
+    + setCourse(course: Course): void
+    + getGrade(): int
+    + setGrade(grade: int): void
+    + toString(): String
+}
+
+class Professor {
+  - name: String
+  - index: int
+
+  + Professor(name: String)
+  + getName(): String
+  + setName(newName: String): void
+  + getIndex(): int
+  + toString(): String
+}
+
+class Course {
+  - name: String
+  - index: int
+
+  + Course(name: String)
+  + getName(): String
+  + setName(name: String): void
+  + getIndex(): int
+  + toString(): String
+}
+
+Allele::professor -up-> Professor
+Allele::course -down-> Course
+@enduml

@@ -1,0 +1,12 @@
+@startuml
+class Professor {
+  - name: String
+  - index: int
+
+  + Professor(name: String)
+  + getName(): String
+  + setName(newName: String): void
+  + getIndex(): int
+  + toString(): String
+}
+@enduml

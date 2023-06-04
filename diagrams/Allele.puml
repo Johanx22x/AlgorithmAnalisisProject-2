@@ -1,0 +1,18 @@
+@startuml
+class Allele {
+    - professor: Professor
+    - course: Course
+    - grade: int
+
+    + Allele(professor: Professor, course: Course, grade: int)
+    + getAllele(): Allele
+    + setAllele(allele: Allele): void
+    + getProfessor(): Professor
+    + setProfessor(professor: Professor): void
+    + getCourse(): Course
+    + setCourse(course: Course): void
+    + getGrade(): int
+    + setGrade(grade: int): void
+    + toString(): String
+}
+@enduml

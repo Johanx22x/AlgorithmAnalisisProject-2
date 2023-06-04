@@ -1,0 +1,9 @@
+@startuml
+class ParsedData {
+    - alleles: ArrayList<Allele>
+    - courses: int
+    - population: int
+
+    + toString(): String
+}
+@enduml

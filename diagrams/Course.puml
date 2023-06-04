@@ -1,0 +1,12 @@
+@startuml
+class Course {
+  - name: String
+  - index: int
+
+  + Course(name: String)
+  + getName(): String
+  + setName(name: String): void
+  + getIndex(): int
+  + toString(): String
+}
+@enduml
