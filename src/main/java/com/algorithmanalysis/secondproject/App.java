@@ -5,25 +5,17 @@ import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
 
 import org.json.simple.parser.ParseException;
 
-import com.algorithmanalysis.secondproject.algorithms.Backtracking;
 import com.algorithmanalysis.secondproject.algorithms.Backtracking2;
 import com.algorithmanalysis.secondproject.algorithms.Dynamic;
 import com.algorithmanalysis.secondproject.algorithms.Genetic;
-import com.algorithmanalysis.secondproject.models.Allele;
 import com.algorithmanalysis.secondproject.models.Chromosome;
 import com.algorithmanalysis.secondproject.storage.LoadJson;
 import com.algorithmanalysis.secondproject.storage.LoadJson.ParsedData;
 import com.algorithmanalysis.secondproject.utils.ErrorCodes;
 import com.algorithmanalysis.secondproject.utils.Measurement;
-
-import guru.nidi.graphviz.engine.Format;
-import moe.leer.codeflowcore.CodeFlow;
 
 /**
  * Project: Algorithm Analysis Project 2
@@ -45,15 +37,18 @@ public class App {
 
         for (String file : files) {
             Measurement.reset(); // Reset the measurements
-                                 
+
             Chromosome bestResult = null; // The overall best result
             System.out.println("\nFile: " + file); // Print the file name
             Measurement.incrementComparisons(1); // Increment the comparisons by 1 for each try
 
             Genetic genetic = new Genetic(); // Create a new genetic object
             Measurement.incrementAssignments(1); // Increment the assignments by 1 for the genetic object
-                                                 
+
+            Measurement.beginTime();
             ErrorCodes error = Genetic.runGenetic(genetic, file); // Run the genetic algorithm
+            Measurement.endTime();
+
             Measurement.incrementAssignments(1); // Increment the assignments by 1 for the error code
 
             Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
@@ -66,7 +61,7 @@ public class App {
                     System.out.println();
                     continue; // Continue to the next file
                 }
-                
+
                 Measurement.incrementComparisons(1); // Increment the comparisons by 1 for the next if statement
                 if (bestResult == null || genetic.getFitness() > bestResult.fitness()) { // If the fitness is better
                                                                                          // than the best result
@@ -80,14 +75,15 @@ public class App {
                 continue; // Continue to the next file
             }
 
-            // Write crossoverBuffer and mutationBuffer to file fileName+"_crossoverBuffer.txt" and fileName+"_mutationBuffer.txt"
+            // Write crossoverBuffer and mutationBuffer to file
+            // fileName+"_crossoverBuffer.txt" and fileName+"_mutationBuffer.txt"
             String crossoverBufferFile = genetic.getCrossoverBuffer();
             String mutationBufferFile = genetic.getMutationBuffer();
             String crossoverBufferFileName = file.substring(0, file.length() - 5) + "_crossoverBuffer.txt";
             String mutationBufferFileName = file.substring(0, file.length() - 5) + "_mutationBuffer.txt";
             System.out.println("\n\tWriting crossover buffer to file: " + crossoverBufferFileName);
             System.out.println("\tWriting mutation buffer to file: " + mutationBufferFileName);
-            // If the file not exists, create it 
+            // If the file not exists, create it
             File crossoverBufferFileObject = new File(crossoverBufferFileName);
             File mutationBufferFileObject = new File(mutationBufferFileName);
 
@@ -100,7 +96,7 @@ public class App {
             crossoverBufferFileWriter.write(crossoverBufferFile);
             crossoverBufferFileWriter.close();
 
-            // Write the mutation buffer to the file 
+            // Write the mutation buffer to the file
             FileWriter mutationBufferFileWriter = new FileWriter(mutationBufferFileObject);
             mutationBufferFileWriter.write(mutationBufferFile);
             mutationBufferFileWriter.close();
@@ -109,7 +105,7 @@ public class App {
             System.out.println("\nThe best result is: " + bestResult);
             System.out.println("\n\tThe best fitness is: " + bestResult.fitness()); // Print the best fitness
 
-            // Print the best 5 results 
+            // Print the best 5 results
             if (verbose) {
                 System.out.println("\n\tThe best 5 results are: ");
                 for (Chromosome chromosome : Genetic.getBestChromosomes()) {
@@ -117,12 +113,12 @@ public class App {
                     System.out.println("\t\tFitness: " + chromosome.fitness());
                 }
             }
-            
+
             // Print the measurements
             System.out.println("\n" + Measurement.getMeasurement());
             System.out.println();
         }
-        
+
         // Dynamic algorithm
         System.out.println("\nDynamic algorithm:");
         for (String file : files) {
@@ -131,12 +127,14 @@ public class App {
 
             // Load the data from the file
             ParsedData parsedData = LoadJson.fromFile(file);
-            
+
             Measurement.setSize(parsedData.alleles.size()); // Set the size of the matrix
 
             // Create a matrix with the data
+            Measurement.beginTime();
             ErrorCodes error = Dynamic.runDynamicAlgorithm(parsedData.alleles, parsedData.courses,
                     parsedData.alleles.size() / parsedData.courses); // Run the genetic algorithm
+            Measurement.endTime();
 
             if (!(error == ErrorCodes.NO_ERROR)) { // If there is an error
                 System.out.println();
@@ -155,47 +153,49 @@ public class App {
         // // for (String file : files) {
         // Measurement.reset(); // Reset the measurements
         // // System.out.println("\nFile: " + file); // Print the file name
-                                               
+
         // String file = "data/data1.json";
         // ParsedData data = LoadJson.fromFile(file);
-        // Optional<List<Allele>> filteredData = Backtracking.getCombinations(data.alleles,
-        //         data.courses).stream()
-        //         .sorted(Comparator.comparingInt(combination -> -combination.stream().mapToInt(Allele::getGrade).sum()))
-        //         .findFirst();
+        // Optional<List<Allele>> filteredData =
+        // Backtracking.getCombinations(data.alleles, data.courses).stream()
+        // .sorted(Comparator.comparingInt(combination ->
+        // -combination.stream().mapToInt(Allele::getGrade).sum()))
+        // .findFirst();
 
         // System.out.println(filteredData);
 
         // if (filteredData.isPresent()) {
-        //     Chromosome chromosome = new Chromosome(filteredData.get());
-        //     System.out.println(chromosome);
-        //     System.out.println(chromosome.fitness());
+        // Chromosome chromosome = new Chromosome(filteredData.get());
+        // System.out.println(chromosome);
+        // System.out.println(chromosome.fitness());
         // } else {
-        //     System.out.println("No solution found");
+        // System.out.println("No solution found");
         // }
 
         // // Print the measurements
         // System.out.println("\n" + Measurement.getMeasurement());
+        // }
         // System.out.println();
-        // }
-        
+
         // Backtracking algorithm (second approach)
-        // System.out.println("\nBacktracking algorithm (second approach):");
-        // for (String file : files) {
-            // String file = "data/data0.json";
-            // Measurement.reset(); // Reset the measurements
-            // System.out.println("\nFile: " + file); // Print the file name
+        System.out.println("\nBacktracking algorithm (second approach):");
+        for (String file : files) {
+            Measurement.reset(); // Reset the measurements
+            System.out.println("\nFile: " + file); // Print the file name
 
-            // // Load the data from the file
-            // ParsedData parsedData = LoadJson.fromFile(file);
+            // Load the data from the file
+            ParsedData parsedData = LoadJson.fromFile(file);
 
-            // // Create a matrix with the data
-            // Backtracking2.runBacktracking(parsedData.alleles, parsedData.courses,
-            //         parsedData.alleles.size() / parseprofessors dData.courses); // Run the genetic algorithm
+            // Create a matrix with the data
+            Measurement.beginTime();
+            Backtracking2.runBacktracking(parsedData.alleles, parsedData.courses,
+                    parsedData.alleles.size() / parsedData.courses); // Run the backtracking2 algorithm
+            Measurement.endTime();
 
-            // // Print the measurements
-            // System.out.println("\n" + Measurement.getMeasurement());
-            // System.out.println();
-        // }
+            // Print the measurements
+            System.out.println("\n" + Measurement.getMeasurement());
+            System.out.println();
+        }
     }
 
     /**

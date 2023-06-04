@@ -1,5 +1,8 @@
 package com.algorithmanalysis.secondproject.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This class represents a measurement of a certain algorithm.
  *
@@ -11,12 +14,13 @@ package com.algorithmanalysis.secondproject.utils;
  * @version 1.0
  */
 public class Measurement {
+    private static long currentTime;
     private static int size = 0; // Size of the input
     private static int assignments = 0; // Number of assignments
     private static int comparisons = 0; // Number of comparisons
     // Total of instructions (assignments + comparisons)
     private static int memoryUsage = 0; // Memory usage in bits
-                                        
+
     /**
      * Resets the measurements.
      */
@@ -25,6 +29,14 @@ public class Measurement {
         assignments = 0;
         comparisons = 0;
         memoryUsage = 0;
+    }
+
+    public static void beginTime() {
+        currentTime = System.nanoTime();
+    }
+
+    public static void endTime() {
+        currentTime = System.nanoTime() - currentTime;
     }
 
     /**
@@ -71,7 +83,7 @@ public class Measurement {
     public int getSize() {
         return size;
     }
-    
+
     /**
      * Getter of the number of assignments.
      *
@@ -114,7 +126,9 @@ public class Measurement {
      * @return {@link String} representation of the measurement
      */
     public static String getMeasurement() {
-        return "Measurement:\n\tSize: \t\t\t" + size + " elements\n\tAssignments: \t\t" + assignments + "\n\tComparisons: \t\t" + comparisons + 
-            "\n\tTotal instructions: \t" + (int)(assignments+comparisons) + "\n\tMemory usage: \t\t" + memoryUsage + " bytes";
+        return "Measurement:\n\tSize: \t\t\t" + size + " elements\n\tAssignments: \t\t" + assignments
+                + "\n\tComparisons: \t\t" + comparisons +
+                "\n\tTotal instructions: \t" + (int) (assignments + comparisons) + "\n\tMemory usage: \t\t"
+                + memoryUsage + " bytes" + "\n\tTime: \t" + currentTime / 1000 + "ms";
     }
 }
