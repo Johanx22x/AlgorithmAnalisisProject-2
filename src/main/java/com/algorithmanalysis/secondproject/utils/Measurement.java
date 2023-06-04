@@ -14,12 +14,12 @@ import java.util.List;
  * @version 1.0
  */
 public class Measurement {
+    private static long memoryUsage = 0; // Memory usage in bits
     private static long currentTime;
-    private static int size = 0; // Size of the input
-    private static int assignments = 0; // Number of assignments
-    private static int comparisons = 0; // Number of comparisons
+    private static long size = 0; // Size of the input
+    private static long assignments = 0; // Number of assignments
+    private static long comparisons = 0; // Number of comparisons
     // Total of instructions (assignments + comparisons)
-    private static int memoryUsage = 0; // Memory usage in bits
 
     /**
      * Resets the measurements.
@@ -44,7 +44,7 @@ public class Measurement {
      *
      * @param size Size of the input
      */
-    public static void setSize(int size) {
+    public static void setSize(long size) {
         Measurement.size = size;
     }
 
@@ -53,7 +53,7 @@ public class Measurement {
      *
      * @param n Number of assignments to increment
      */
-    public static void incrementAssignments(int n) {
+    public static void incrementAssignments(long n) {
         assignments += n;
     }
 
@@ -62,7 +62,7 @@ public class Measurement {
      *
      * @param n Number of comparisons to increment
      */
-    public static void incrementComparisons(int n) {
+    public static void incrementComparisons(long n) {
         comparisons += n;
     }
 
@@ -71,11 +71,11 @@ public class Measurement {
      *
      * @param n Memory usage to increment
      */
-    public static void incrementMemoryUsage(int n) {
+    public static void incrementMemoryUsage(long n) {
         memoryUsage += n;
     }
 
-    public static void incrementMemoryUsage(long n) {
+    public static void incrementMemoryUsage(int n) {
         memoryUsage += n;
     }
 
@@ -84,7 +84,7 @@ public class Measurement {
      *
      * @return Size of the input
      */
-    public int getSize() {
+    public long getSize() {
         return size;
     }
 
@@ -93,7 +93,7 @@ public class Measurement {
      *
      * @return Number of assignments
      */
-    public static int getAssignments() {
+    public static long getAssignments() {
         return assignments;
     }
 
@@ -102,7 +102,7 @@ public class Measurement {
      *
      * @return Number of comparisons
      */
-    public static int getComparisons() {
+    public static long getComparisons() {
         return comparisons;
     }
 
@@ -111,7 +111,7 @@ public class Measurement {
      *
      * @return Total of instructions
      */
-    public static int getTotalOfInstructions() {
+    public static long getTotalOfInstructions() {
         return assignments + comparisons;
     }
 
@@ -120,7 +120,7 @@ public class Measurement {
      *
      * @return Memory usage
      */
-    public static int getMemoryUsage() {
+    public static long getMemoryUsage() {
         return memoryUsage;
     }
 
@@ -132,7 +132,7 @@ public class Measurement {
     public static String getMeasurement() {
         return "Measurement:\n\tSize: \t\t\t" + size + " elements\n\tAssignments: \t\t" + assignments
                 + "\n\tComparisons: \t\t" + comparisons +
-                "\n\tTotal instructions: \t" + (int) (assignments + comparisons) + "\n\tMemory usage: \t\t"
+                "\n\tTotal instructions: \t" + (long) (assignments + comparisons) + "\n\tMemory usage: \t\t"
                 + Math.abs(memoryUsage / 1e+6) + " mb" + "\n\tTime: \t" + currentTime / 1000 + "ms";
     }
 }
