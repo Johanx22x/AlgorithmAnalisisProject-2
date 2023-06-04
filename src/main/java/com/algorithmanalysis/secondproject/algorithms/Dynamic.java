@@ -9,6 +9,14 @@ import com.algorithmanalysis.secondproject.utils.ErrorCodes;
 import com.algorithmanalysis.secondproject.utils.Measurement;
 import com.algorithmanalysis.secondproject.App;
 
+/**
+ * Dynamic
+ * 
+ * This class is used to solve the problem using dynamic programming.
+ * 
+ * @author Johan Rodriguez
+ * @version 1.2
+ */
 public class Dynamic {
     /**
      * Run the dynamic algorithm 
