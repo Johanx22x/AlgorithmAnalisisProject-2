@@ -29,6 +29,8 @@ public class Backtracking2 {
         Measurement.incrementAssignments(4);
         totalOfCombinations = 0; // Reset the total of combinations +1
 
+        Measurement.setSize(totalOfCourses * totalOfProfessors);
+
         // Create the matrix
         int[][] matrix = new int[totalOfCourses][totalOfProfessors]; // Create the matrix +1
         for (Allele allele : alleles) { // Fill the matrix with the grades +mn

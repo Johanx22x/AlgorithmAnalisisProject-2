@@ -1,17 +1,7 @@
 package com.algorithmanalysis.secondproject;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-
-import com.algorithmanalysis.secondproject.models.Allele;
-import com.algorithmanalysis.secondproject.models.Course;
-import com.algorithmanalysis.secondproject.models.Professor;
-import com.algorithmanalysis.secondproject.storage.DataStore;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

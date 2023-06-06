@@ -1,8 +1,5 @@
 package com.algorithmanalysis.secondproject.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * This class represents a measurement of a certain algorithm.
  *
@@ -130,9 +127,9 @@ public class Measurement {
      * @return {@link String} representation of the measurement
      */
     public static String getMeasurement() {
-        return "Measurement:\n\tSize: \t\t\t" + size + " elements\n\tAssignments: \t\t" + assignments
+        return "Measurement:\n\tSize: \t\t\t" + size + " (elements)\n\tAssignments: \t\t" + assignments
                 + "\n\tComparisons: \t\t" + comparisons +
                 "\n\tTotal instructions: \t" + (long) (assignments + comparisons) + "\n\tMemory usage: \t\t"
-                + Math.abs(memoryUsage / 1e+6) + " mb" + "\n\tTime: \t" + currentTime / 1000 + "ms";
+                + Math.abs(memoryUsage / 1e+6) + " (MB)" + "\n\tTime: \t\t\t" + currentTime / 1000 + " (ms)";
     }
 }
