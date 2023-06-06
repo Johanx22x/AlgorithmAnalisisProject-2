@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import org.json.simple.parser.ParseException;
 
-import com.algorithmanalysis.secondproject.algorithms.Backtracking2;
+import com.algorithmanalysis.secondproject.algorithms.Backtracking;
 import com.algorithmanalysis.secondproject.algorithms.Dynamic;
 import com.algorithmanalysis.secondproject.algorithms.Genetic;
 import com.algorithmanalysis.secondproject.models.Chromosome;
@@ -155,38 +155,13 @@ public class App {
             System.out.println();
         }
 
-        // Backtracking algorithm
-        // System.out.println("\nBacktracking algorithm");
-        // // for (String file : files) {
-        // Measurement.reset(); // Reset the measurements
-        // // System.out.println("\nFile: " + file); // Print the file name
+        ArrayList<String> files_backtracking = new ArrayList<>();
+        files_backtracking.add("data/data0.json");
+        files_backtracking.add("data/data1.json");
 
-        // String file = "data/data1.json";
-        // ParsedData data = LoadJson.fromFile(file);
-        // Optional<List<Allele>> filteredData =
-        // Backtracking.getCombinations(data.alleles, data.courses).stream()
-        // .sorted(Comparator.comparingInt(combination ->
-        // -combination.stream().mapToInt(Allele::getGrade).sum()))
-        // .findFirst();
-
-        // System.out.println(filteredData);
-
-        // if (filteredData.isPresent()) {
-        // Chromosome chromosome = new Chromosome(filteredData.get());
-        // System.out.println(chromosome);
-        // System.out.println(chromosome.fitness());
-        // } else {
-        // System.out.println("No solution found");
-        // }
-
-        // // Print the measurements
-        // System.out.println("\n" + Measurement.getMeasurement());
-        // }
-        // System.out.println();
-
-        // Backtracking algorithm (second approach)
-        System.out.println("\nBacktracking algorithm (second approach):");
-        for (String file : files) {
+        // Backtracking algorithm 
+        System.out.println("\nBacktracking algorithm:");
+        for (String file : files_backtracking) {
             Measurement.reset(); // Reset the measurements
             System.out.println("\nFile: " + file); // Print the file name
 
@@ -197,7 +172,7 @@ public class App {
             Measurement.beginTime();
 
             long a = Runtime.getRuntime().totalMemory();
-            Backtracking2.runBacktracking(parsedData.alleles, parsedData.courses,
+            Backtracking.runBacktracking(parsedData.alleles, parsedData.courses,
                     parsedData.alleles.size() / parsedData.courses); // Run the backtracking2 algorithm
             long b = Runtime.getRuntime().freeMemory();
             Measurement.incrementMemoryUsage(a - b);
